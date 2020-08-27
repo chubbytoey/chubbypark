@@ -51,7 +51,7 @@ CREATE TABLE `Users`(
     `age` SMALLINT(3) NOT NULL,
 
     PRIMARY KEY(`user_id`),
-    CONSTRAINT `accounts_ibfk_1` FOREIGN KEY(`account_id`) REFERENCES `Accounts`.`account_id`
+    CONSTRAINT `accounts_ibfk_1` FOREIGN KEY(`account_id`) REFERENCES `Accounts`(`account_id`)
 
 ) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
 
@@ -67,9 +67,9 @@ CREATE TABLE `ParkingLots`(
     `loaction_id` INT NOT NULL ,
 
     PRIMARY KEY(`code_lot`),
-    CONSTRAINT `users_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES `Users`.`user_id`,
-    CONSTRAINT `categories_ibfk_2` FOREIGN KEY(`category_id`) REFERENCES `Categories`.`category_id`,
-    CONSTRAINT `locations_ibfk_1` FOREIGN KEY(`location_id`) REFERENCES `Locations`.`location_id`
+    CONSTRAINT `users_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES `Users`(`user_id`),
+    CONSTRAINT `categories_ibfk_2` FOREIGN KEY(`category_id`) REFERENCES `Categories`(`category_id`),
+    CONSTRAINT `locations_ibfk_1` FOREIGN KEY(`location_id`) REFERENCES `Locations`(`location_id`)
 
 ) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
 
