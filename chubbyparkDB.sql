@@ -2,12 +2,11 @@ CREATE DATABASE IF NOT EXISTS `chubbyparkDB`;
 
 USE 'chubbyparkDB';
 
+DROP TABLE IF EXISTS `ParkingLots`;
+DROP TABLE IF EXISTS `Users`;
 DROP TABLE IF EXISTS `Account`;
 DROP TABLE IF EXISTS `Locations`;
 DROP TABLE IF EXISTS `Categories`;
-DROP TABLE IF EXISTS `Users`;
-DROP TABLE IF EXISTS `ParkingLots`;
-
 
 CREATE TABLE `Accounts`(
     `account_id` INT NOT NULL AUTO_INCREMENT,
@@ -15,7 +14,6 @@ CREATE TABLE `Accounts`(
     `password` VARCHAR(8) NOT NULL,
     `status`   VARCHAR(10) NOT NULL,
     
-
     PRIMARY KEY(`account_id`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET utf8mb4;
@@ -62,7 +60,7 @@ CREATE TABLE `ParkingLots`(
     `lot_status` VARCHAR(12) NOT NULL,
     `checkin` TIME ,
     `checkout` TIME ,
-    `hour` SMALLINT(2);
+    `hour` SMALLINT(2),
     `price` DECIMAL NOT NULL,
     `user_id` INT NOT NULL ,
     `category_id` INT NOT NULL ,
