@@ -7,6 +7,9 @@ DROP TABLE IF EXISTS `Users`;
 DROP TABLE IF EXISTS `Accounts`;
 DROP TABLE IF EXISTS `Locations`;
 DROP TABLE IF EXISTS `Categories`;
+DROP TABLE IF EXISTS `Users`;
+DROP TABLE IF EXISTS `ParkingLots`;
+
 
 CREATE TABLE `Accounts`(
     `account_id` INT NOT NULL AUTO_INCREMENT,
@@ -14,6 +17,7 @@ CREATE TABLE `Accounts`(
     `password` VARCHAR(8) NOT NULL,
     `status`   VARCHAR(10) NOT NULL,
     
+
     PRIMARY KEY(`account_id`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET utf8mb4;
