@@ -1,10 +1,10 @@
 CREATE DATABASE IF NOT EXISTS `chubbyparkDB`;
 
-USE 'chubbyparkDB';
+USE `chubbyparkDB`;
 
 DROP TABLE IF EXISTS `ParkingLots`;
 DROP TABLE IF EXISTS `Users`;
-DROP TABLE IF EXISTS `Account`;
+DROP TABLE IF EXISTS `Accounts`;
 DROP TABLE IF EXISTS `Locations`;
 DROP TABLE IF EXISTS `Categories`;
 
@@ -19,7 +19,7 @@ CREATE TABLE `Accounts`(
 ) ENGINE=InnoDB DEFAULT CHARSET utf8mb4;
 
 CREATE TABLE `Locations`(
-    `loaction_id` INT NOT NULL AUTO_INCREMENT,
+    `location_id` INT NOT NULL AUTO_INCREMENT,
     `location_name` VARCHAR(100) NOT NULL,
     `price_rate` DECIMAL NOT NULL,
     `category_Id` INT NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE `Categories`(
 ) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
 
 CREATE TABLE `Users`(
-    `account_id` INT NOT NULL AUTO_INCREMENT,
+    `account_id` INT NOT NULL,
     `user_id` INT NOT NULL AUTO_INCREMENT,
     `user_rate` SMALLINT(1) NOT NULL,
     `previllage` VARCHAR(20) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `Users`(
     `age` SMALLINT(3) NOT NULL,
 
     PRIMARY KEY(`user_id`),
-    CONSTRAINT `accounts_ibfk_1` FOREIGN KEY(`account_id`) REFERENCES `Accounts`.`account_id`
+    CONSTRAINT `accounts_ibfk_1` FOREIGN KEY(`account_id`) REFERENCES `Accounts`(`account_id`)
 
 ) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
 
@@ -64,12 +64,12 @@ CREATE TABLE `ParkingLots`(
     `price` DECIMAL NOT NULL,
     `user_id` INT NOT NULL ,
     `category_id` INT NOT NULL ,
-    `loaction_id` INT NOT NULL ,
+    `location_id` INT NOT NULL ,
 
     PRIMARY KEY(`code_lot`),
-    CONSTRAINT `users_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES `Users`.`user_id`,
-    CONSTRAINT `categories_ibfk_2` FOREIGN KEY(`category_id`) REFERENCES `Categories`.`category_id`,
-    CONSTRAINT `locations_ibfk_1` FOREIGN KEY(`location_id`) REFERENCES `Locations`.`location_id`
+    CONSTRAINT `users_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES `Users`(`user_id`),
+    CONSTRAINT `categories_ibfk_2` FOREIGN KEY(`category_id`) REFERENCES `Categories`(`category_id`),
+    CONSTRAINT `locations_ibfk_1` FOREIGN KEY(`location_id`) REFERENCES `Locations`(`location_id`)
 
 ) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
 
