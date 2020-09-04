@@ -1,12 +1,13 @@
 CREATE DATABASE IF NOT EXISTS `chubbyparkDB`;
 
-USE 'chubbyparkDB';
+USE `chubbyparkDB`;
 
-DROP TABLE IF EXISTS `ParkingLots`;
-DROP TABLE IF EXISTS `Users`;
-DROP TABLE IF EXISTS `Account`;
+DROP TABLE IF EXISTS `Accounts`;
 DROP TABLE IF EXISTS `Locations`;
 DROP TABLE IF EXISTS `Categories`;
+DROP TABLE IF EXISTS `Users`;
+DROP TABLE IF EXISTS `ParkingLots`;
+
 
 CREATE TABLE `Accounts`(
     `account_id` INT NOT NULL AUTO_INCREMENT,
@@ -14,12 +15,13 @@ CREATE TABLE `Accounts`(
     `password` VARCHAR(8) NOT NULL,
     `status`   VARCHAR(10) NOT NULL,
     
+
     PRIMARY KEY(`account_id`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET utf8mb4;
 
 CREATE TABLE `Locations`(
-    `loaction_id` INT NOT NULL AUTO_INCREMENT,
+    `location_id` INT NOT NULL AUTO_INCREMENT,
     `location_name` VARCHAR(100) NOT NULL,
     `price_rate` DECIMAL NOT NULL,
     `category_Id` INT NOT NULL,
@@ -38,7 +40,7 @@ CREATE TABLE `Categories`(
 ) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
 
 CREATE TABLE `Users`(
-    `account_id` INT NOT NULL AUTO_INCREMENT,
+    `account_id` INT NOT NULL ,
     `user_id` INT NOT NULL AUTO_INCREMENT,
     `user_rate` SMALLINT(1) NOT NULL,
     `previllage` VARCHAR(20) NOT NULL,
@@ -64,7 +66,7 @@ CREATE TABLE `ParkingLots`(
     `price` DECIMAL NOT NULL,
     `user_id` INT NOT NULL ,
     `category_id` INT NOT NULL ,
-    `loaction_id` INT NOT NULL ,
+    `location_id` INT NOT NULL ,
 
     PRIMARY KEY(`code_lot`),
     CONSTRAINT `users_ibfk_1` FOREIGN KEY(`user_id`) REFERENCES `Users`(`user_id`),
