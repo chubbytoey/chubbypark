@@ -19,3 +19,11 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+Route.group(() => {
+
+  Route.resource('/locations','LocationController')
+  Route.resource('/parkinglots','ParkinglotController')
+  Route.resource('/categories','CategoryController')
+
+}).prefix('api/v1')
