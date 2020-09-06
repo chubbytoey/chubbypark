@@ -1,6 +1,6 @@
 'use strict'
 
-class ParkingLotController {
+class ParkinglotController {
 }
 
-module.exports = ParkingLotController
+module.exports = ParkinglotController
