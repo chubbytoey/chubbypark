@@ -2,13 +2,12 @@ CREATE DATABASE IF NOT EXISTS `chubbyparkDB`;
 
 USE `chubbyparkDB`;
 
+DROP TABLE IF EXISTS `Locations`;
 DROP TABLE IF EXISTS `ParkingLots`;
 DROP TABLE IF EXISTS `Users`;
 DROP TABLE IF EXISTS `Accounts`;
-DROP TABLE IF EXISTS `Locations`;
 DROP TABLE IF EXISTS `Categories`;
-DROP TABLE IF EXISTS `Users`;
-DROP TABLE IF EXISTS `ParkingLots`;
+
 
 
 CREATE TABLE `Accounts`(
@@ -22,15 +21,6 @@ CREATE TABLE `Accounts`(
 
 ) ENGINE=InnoDB DEFAULT CHARSET utf8mb4;
 
-CREATE TABLE `Locations`(
-    `location_id` INT NOT NULL AUTO_INCREMENT,
-    `location_name` VARCHAR(100) NOT NULL,
-    `price_rate` DECIMAL NOT NULL,
-    `category_Id` INT NOT NULL,
-
-    PRIMARY KEY(`location_id`)
-
-) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
 
 CREATE TABLE `Categories`(
     `category_id` INT NOT NULL AUTO_INCREMENT,
@@ -40,6 +30,20 @@ CREATE TABLE `Categories`(
     PRIMARY KEY(`category_id`)
 
 ) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
+
+
+
+CREATE TABLE `Locations`(
+    `location_id` INT NOT NULL AUTO_INCREMENT,
+    `location_name` VARCHAR(100) NOT NULL,
+    `price_rate` DECIMAL NOT NULL,
+    `category_Id` INT NOT NULL,
+
+    PRIMARY KEY(`location_id`),
+    CONSTRAINT `categories_ibfk_1` FOREIGN KEY(`category_id`) REFERENCES `Categories`(`category_id`) ON UPDATE CASCADE ON DELETE CASCADE
+
+) ENGINE = InnoDB DEFAULT CHARSET utf8mb4;
+
 
 CREATE TABLE `Users`(
     `account_id` INT NOT NULL,
@@ -53,6 +57,7 @@ CREATE TABLE `Users`(
     `lastname` VARCHAR(100) NOT NULL,
     `gender` VARCHAR(10),
     `age` SMALLINT(3) NOT NULL,
+    `coin` DECIMAL NOT NULL,
 
     PRIMARY KEY(`user_id`),
     CONSTRAINT `accounts_ibfk_1` FOREIGN KEY(`account_id`) REFERENCES `Accounts`(`account_id`) ON UPDATE CASCADE ON DELETE CASCADE
