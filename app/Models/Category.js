@@ -6,9 +6,9 @@ const Model = use('Model')
 class Category extends Model {
     static get primaryKey(){
         return 'category_id'
-
     }
-    parkinglot(){
+    
+    parkinglot() {
         return this.belongsToMany('App/Models/Parkinglot')
     }
 }
