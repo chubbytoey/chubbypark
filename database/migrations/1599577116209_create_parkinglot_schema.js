@@ -19,9 +19,11 @@ class CreateParkinglotSchema extends Schema {
         .time('checkout')
       table
         .smallint('hour',2 )
+        .default(0)
       table
         .decimal('price')
         .notNullable()
+        .default(0)
       table
         .integer('category_id')
         .unsigned()
