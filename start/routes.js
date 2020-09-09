@@ -25,5 +25,8 @@ Route.group(() => {
   Route.resource('/locations','LocationController')
   Route.resource('/parkinglots','ParkinglotController')
   Route.resource('/categories','CategoryController')
+  Route.resource('/Accounts','AccountController')
+  Route.resource('/Customers','CustomerController')
+  Route.resource('/Admins','AdminController')
 
 }).prefix('api/v1')
