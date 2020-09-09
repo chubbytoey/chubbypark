@@ -43,7 +43,7 @@ class CreateParkinglotSchema extends Schema {
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
       table
-        .foreign('loacation_id')
+        .foreign('location_id')
         .references('locations.location_id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
