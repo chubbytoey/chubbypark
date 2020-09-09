@@ -13,7 +13,6 @@ class CreateParkinglotSchema extends Schema {
         .notNullable()
       table
         .time('checkin')
-        .notNullable()
         .default(this.fn.now())
       table
         .time('checkout')
