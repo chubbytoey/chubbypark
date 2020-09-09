@@ -2,6 +2,7 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const Hash = use('Hash')
 
 class Account extends Model {
     static get primaryKey(){
@@ -18,6 +19,14 @@ class Account extends Model {
     }
     customer() {
         return this.belongsTo('App/Models/Customer')
+    }
+    static boot() {
+        super.boot()
+        this.addHook('beforeSave',async (accountInstance) => {
+            if(accountInstance.dirty.password) {
+                accountInstance.password = await Hash.make(accountInstance.dirty.password)
+            }
+        })
     }
 }
 
