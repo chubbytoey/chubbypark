@@ -41,6 +41,16 @@ class CategoryController {
 
 
     }
+    async update ({request}){
+        const {body, params} = request
+        const {id} = params
+        const {type,hour} = body
+        const category = await Category.find(id)
+
+        category.merge({type:type,hour:hour})
+         await category.save()
+
+    }
     async destroy ({request}){
         const {id} = request.params
         const category = await Category.find(id)
