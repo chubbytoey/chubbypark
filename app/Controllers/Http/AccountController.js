@@ -2,8 +2,8 @@
 
 const Database = use('Database')
 const Account = use('App/Models/Account')
-const AccountValidator = require('../../../service/accountValidator.js')
-
+const AccountValidator = require('../../../service/AccountValidator.js')
+const AccountUtil = require('../../../util/AccountUtil')
 
 function numberTypeParamValidator (number) {
     if(Number.isNaN(parseInt(number))) {
@@ -16,28 +16,24 @@ class AccountController {
     async index({request}) {
         const {references = undefined} = request.qs
 
-        const accounts = Account.query()
-        if(references) {
-            const extractedReferences = references.split(",")
-            accounts.with(extractedReferences)
-        }
-        return {status:200 , error:undefined , data:await accounts.fetch()}
+        const accountUtil = new AccountUtil(Account)
+        const accounts = await accountUtil.getAll(references)
+
+        return {status:200 , error:undefined , data:accounts || {}}
     }
     async show({request}) {
         const {id} = request.params
 
         const ValidatedValue = numberTypeParamValidator(id)
-
         if(ValidatedValue.error) {
             return {status:500 , error:ValidatedValue.error , data:undefined}
         }
 
-        const account = await Database
-            .table('accounts')
-            .where('account_id',id)
-            .first()
+        const {references} = request.qs
+        const accountUtil = new AccountUtil(Account)
+        const accounts = await accountUtil.getByID(id,references)
 
-        return {status:200 , error:undefined , data:account}
+        return {status:200 , error:undefined , data:accounts || {}}
     }
     async store({request}) {
         const {username,password} = request.body
