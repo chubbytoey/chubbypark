@@ -1,7 +1,8 @@
 'use strict'
 const Database = use('Database')
 const Admin = use('App/Models/Admin')
-const AdminValidator = require('../../../service/adminValidator.js')
+const AdminValidator = require('../../../service/AdminValidator.js')
+const AdminUtil = require('../../../util/AdminUtil')
 
 function numberTypeParamValidator (number) {
     if(Number.isNaN(parseInt(number))) {
@@ -14,13 +15,10 @@ class AdminController {
     async index({request}) {
         const {references = undefined} = request.qs
 
-        const admins = Admin.query()
-        if(references) {
-            const extractedReferences = references.split(",")
-            admins.with(extractedReferences)
-        }
+        const adminUtil = new AdminUtil(Admin)
+        const admins = await adminUtil.getAll(references)
 
-        return {status:200 , error:undefined , data:await admins.fetch()}
+        return {status:200 , error:undefined , data:admins || {}}
     }
     async show({request}) {
         const {id} = request.params
@@ -31,12 +29,11 @@ class AdminController {
             return {status:500 , error:ValidatedValue.error , data:undefined}
         }
 
-        const admin = await Database
-            .table('admins')
-            .where('admin_id',id)
-            .first()
+        const {references} = request.qs
+        const adminUtil = new AdminUtil(Admin)
+        const admins = await adminUtil.getByID(id,references)
 
-        return {status:200 , error:undefined , data:admin}
+        return {status:200 , error:undefined , data:admins || {}}
     }
 
     async store({request}) {
