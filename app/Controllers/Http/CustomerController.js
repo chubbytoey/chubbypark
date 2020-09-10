@@ -1,8 +1,9 @@
 'use strict'
 
-const CustomerValidator = require("../../../service/customerValidator.js")
+const CustomerValidator = require("../../../service/CustomerValidator.js")
 const Database = use('Database')
 const Customer = use('App/Models/Customer')
+const CustomerUtil = require('../../../util/CustomerUtil')
 
 function numberTypeParamValidator (number) {
     if(Number.isNaN(parseInt(number))) {
@@ -15,13 +16,10 @@ class CustomerController {
     async index({request}) {
         const {references = undefined} = request.qs
 
-        const Customers = Customer.query()
-        if(references) {
-            const extractedReferences = references.split(",")
-            Customers.with(extractedReferences)
-        }
+        const customerUtil = new CustomerUtil(Customer)
+        const customers = await customerUtil.getAll(references)
 
-        return {status:200 , error:undefined , data:await Customers.fetch()}
+        return {status:200 , error:undefined , data:customers || {}}
     }
     async show({request}) {
         const {id} = request.params
@@ -32,12 +30,11 @@ class CustomerController {
             return {status:500 , error:ValidatedValue.error , data:undefined}
         }
 
-        const customer = await Database
-            .table('customers')
-            .where('customer_id',id)
-            .first()
+        const {references} = request.qs
+        const customerUtil = new CustomerUtil(Customer)
+        const customers = await customerUtil.getByID(id,references)
 
-        return {status:200 , error:undefined , data:customer}
+        return {status:200 , error:undefined , data:customers || {}}
     }
 
     async store({request}) {
