@@ -3,6 +3,8 @@
 
 const Location= use('App/Models/Location')
 const LocationValidator = require("../../../service/LocationValidator")
+const LocationUtil =require("../../../util/locationUtil")
+
 
 function numberTypeParamValidator(number){
     if(Number.isNaN(parseInt(number)))
@@ -13,35 +15,60 @@ function numberTypeParamValidator(number){
 class LocationController {
 
     async index(){
-        const locations = await Location.all()
-        return {status: 200,error:undefined,data: locations}
+
+        const {references = undefined} =request.qs
+        const locationUtil = new LocationUtil(Location)
+        const locations =  await locationUtil.getAll(references)
+        
+        return {
+            status: 200,
+            error:undefined,
+            data: locations
+        }
     }
+
     async show({request}){
         const {id} = request.params
 
         const validatedValue = numberTypeParamValidator(id)
         if(validatedValue.error)
-            return {status:500,error:validatedValue.error,data: undefined}
-        const location = await Location.find(id)
+            return {
+                status:500,
+                error:validatedValue.error,
+                data: undefined
+            }
 
-        return {status:200,error:undefined,data: location || {}}
+        const {references = undefined} =request.qs
+        const locationUtil = new LocationUtil(Location)
+        const location =  await locationUtil.getById(id,references)
+
+        return {
+            status:200,
+            error:undefined,
+            data: location || {}
+        }
     }
+
     async store ({request}){
         const {location_name,price_rate,category_id} = request.body
         const validatedData = await LocationValidator(request.body)
 
         if (validatedData.error)
-            return{status: 422,error: validatedData.error,data: undefined}
+            return{
+                status: 422,
+                error: validatedData.error,
+                data: undefined
+            }
         
-        const location = new Location()
-            location.location_name = location_name;
-            location.price_rate = price_rate;
-            location.category_id = category_id;
+        const {references = undefined} =request.qs
+        const locationUtil = new LocationUtil(Location)
+        const location =  await locationUtil.create({location_name,price_rate,category_id},references)
         
         await location.save()
 
 
     }
+
     async update ({request}){
         const {body, params} = request
         const {id} = params

@@ -12,7 +12,7 @@ class CreateLocationSchema extends Schema {
         .string('location_name',100)
         .notNullable()
       table
-        .decimal('price_rate')
+        .float('price_rate')
       table
         .integer('category_id')
         .unsigned()
