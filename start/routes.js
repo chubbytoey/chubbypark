@@ -28,6 +28,8 @@ Route.group(() => {
   Route.resource('/Accounts','AccountController')
   Route.resource('/Customers','CustomerController')
   Route.resource('/Admins','AdminController')
-  Route.post('/Logins','LoginController.login')
+  Route.post('/logins','AuthController.login')
+  Route.post('/auth/logins','TestController.login')
+  Route.post('/auth/registers','TestController.register')
 
 }).prefix('api/v1')
