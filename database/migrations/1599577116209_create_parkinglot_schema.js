@@ -11,9 +11,9 @@ class CreateParkinglotSchema extends Schema {
       table
         .string('lot_status',12)
         .notNullable()
+        .default("available")
       table
         .time('checkin')
-        .default(this.fn.now())
       table
         .time('checkout')
       table
@@ -34,7 +34,6 @@ class CreateParkinglotSchema extends Schema {
       table
         .integer('customer_id')
         .unsigned()
-        .notNullable()
 
       table.timestamps()
 
