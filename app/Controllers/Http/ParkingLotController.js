@@ -1,7 +1,7 @@
 'use strict'
 
 
-const ParkingLot = use('App/Models/ParkingLot')
+const ParkingLot = use('App/Models/Parkinglot')
 const ParkingLotValidator = require("../../../service/ParkingLotValidator")
 const ParkingLotUtil = require("../../../util/parkinglotUtil")
 
@@ -14,7 +14,7 @@ function numberTypeParamValidator(number){
 
 class ParkingLotController {
 
-    async index(){
+    async index({request}){
         const {references = undefined} =request.qs
         const parkingUtil = new ParkingLotUtil(ParkingLot)
         const parkinglots =  await parkingUtil.getAll(references)
