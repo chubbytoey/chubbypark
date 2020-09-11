@@ -3,6 +3,7 @@
 
 const Category = use('App/Models/Category')
 const CategoryValidator = require("../../../service/CategoryValidator")
+const CategoryUtil = require("../../../util/categoryUtil")
 
 function numberTypeParamValidator(number){
     if(Number.isNaN(parseInt(number)))
@@ -13,8 +14,16 @@ function numberTypeParamValidator(number){
 class CategoryController {
 
     async index(){
-        const categories = await Category.all()
-        return {status: 200,error:undefined,data: categories}
+        
+        const {references = undefined} =request.qs
+        const categoryUtil = new CategoryUtil(Category)
+        const categories =  await categoryUtil.getAll(references)
+        
+        return {
+            status: 200,
+            error:undefined,
+            data: categories
+        }
     }
     async show({request}){
         const {id} = request.params
@@ -22,9 +31,16 @@ class CategoryController {
         const validatedValue = numberTypeParamValidator(id)
         if(validatedValue.error)
             return {status:500,error:validatedValue.error,data: undefined}
-        const category = await Category.find(id)
+            
+        const {references = undefined} =request.qs
+        const categoryUtil = new CategoryUtil(Category)
+        const category =  await categoryUtil.getById(id,references)
 
-        return {status:200,error:undefined,data: category || {}}
+        return {
+            status:200,
+            error:undefined,
+            data: category || {}
+        }
     }
     async store ({request}){
         const {type,hour} = request.body
@@ -33,9 +49,11 @@ class CategoryController {
         if (validatedData.error)
             return{status: 422,error: validatedData.error,data: undefined}
         
-        const category = new Category()
-            category.type =type;
-            category.hour=hour;
+       
+        const {references = undefined} =request.qs
+        const categoryUtil = new CategoryUtil(Category)
+        const category =  await categoryUtil.create({type,hour},references)
+
         
         await category.save()
 
