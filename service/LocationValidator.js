@@ -7,7 +7,7 @@ module.exports = async function locationValidator (data) {
 
 
     const rules = {
-        location_name:'required',
+        location_name:'required | unique:Locations,location_name',
         price_rate:'required',
         category_id:'required'
     }
