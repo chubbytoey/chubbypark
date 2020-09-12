@@ -41,10 +41,12 @@ class ParkingLotController {
     async store ({request}){
 
         const {
+            lot_name,
             lot_status,
             checkin,
             checkout,
             price,
+            use_hour,
             category_id,
             location_id,
             customer_id
@@ -57,7 +59,19 @@ class ParkingLotController {
         
         const {references = undefined} =request.qs
         const parkingUtil = new ParkingLotUtil(ParkingLot)
-        const parkinglot =  await parkingUtil.create( {lot_status,checkin,checkout,price,category_id,location_id,customer_id},references)
+        const parkinglot =  await parkingUtil
+            .create( {
+                lot_name,
+                lot_status,
+                checkin,
+                checkout,
+                price,
+                category_id,
+                location_id,
+                customer_id
+            },
+                references
+            )
         
         await parkinglot.save()
 
@@ -66,14 +80,26 @@ class ParkingLotController {
     async update ({request}){
         const {body, params} = request
         const {id} = params
-        const {lot_status,checkin,checkout,price,category_id,location_id,customer_id} = body
+        const {
+            lot_name,
+            lot_status,
+            checkin,
+            checkout,
+            price,
+            use_hour,
+            category_id,
+            location_id,
+            customer_id
+        } = body
         const parkinglot = await ParkingLot.find(id)
 
         category.merge({
+            lot_name:lot_name,
             lot_status:lot_status,
             checkin:checkin,
             checkout:checkout,
             price:price,
+            use_hour:use_hour,
             category_id:category_id,
             location_id:location_id,
             customer_id:customer_id
