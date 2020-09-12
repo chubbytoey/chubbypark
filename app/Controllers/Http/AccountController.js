@@ -1,6 +1,5 @@
 'use strict'
 
-const Database = use('Database')
 const Account = use('App/Models/Account')
 const AccountValidator = require('../../../service/AccountValidator.js')
 const AccountUtil = require('../../../util/AccountUtil')

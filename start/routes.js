@@ -28,12 +28,10 @@ Route.group(() => {
   Route.resource('/Accounts','AccountController')
   Route.resource('/Customers','CustomerController')
   Route.resource('/Admins','AdminController')
-  Route.post('registers','RegisterController.registerAccount')
-  Route.post('/logins','AuthController.login')
+  Route.post('/logins','AuthController.login').middleware('guest')
   Route.get('/getuser','AuthController.getUser')
   Route.get('/logins','AuthController.logout').middleware('auth')
-  Route.post('/auth/logins','TestController.login')
-  Route.post('/auth/registers','TestController.register')
+  Route.get('/checkLogin','TestController.checkLogin')
 
   // RESERVATION
   Route.get('/reserve','ReserveController.show')
@@ -46,9 +44,7 @@ Route.group(() => {
   //ADMIN
   Route.post('/addlot','AdminController.addlot')
 
-
-
-
-
+  //register
+  Route.post('registers','RegisterController.registerAccount')
 
 }).prefix('api/v1')

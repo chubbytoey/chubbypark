@@ -37,7 +37,25 @@ class CategoryUtil {
         .fetch()
         .then(response => response.first())
     }
+    async deleteCategory(categoryID) {
+        const category = await this._Category.findBy('category_id',categoryID)
+        if(!category) {
+            return {message : 'cant find data'}
+        } else{
+            category.delete()
+            await category.save()
+            return {message : 'delete success'}
+        }
+    }
+    async updateCategory(categoryID,type,hour) {
+        const categoryUpdate = await this._Category.findBy('category_id',categoryID)
+        categoryUpdate.type = type
+        categoryUpdate.hour = hour
+        await categoryUpdate.save()
 
+        const category = await this._Category.findBy('category_id',categoryID)
+        return category
+    }
 
 
 }

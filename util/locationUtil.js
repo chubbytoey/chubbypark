@@ -38,7 +38,25 @@ class LocationUtil {
         .then(response => response.first())
     }
 
+    async deleteLocation(locationID) {
+        const location = await this._Location.findBy('location_id',locationID)
+        if(!location) {
+            return {message : 'cant find data'}
+        } else{
+            location.delete()
+            await location.save()
+            return {message : 'delete success'}
+        }
+    }
+    async updateLocation(locationID,location_name,price_rate) {
+        const locationUpdate = await this._Location.findBy('location_id',locationID)
+        locationUpdate.location_name = location_name
+        locationUpdate.price_rate = price_rate
+        await locationUpdate.save()
 
+        const location = await this._Location.findBy('location_id',locationID)
+        return location
+    }
 
 }
 module.exports = LocationUtil

@@ -60,19 +60,25 @@ class CategoryController {
 
     }
     async update ({request}){
-        const {body, params} = request
-        const {id} = params
-        const {type,hour} = body
-        const category = await Category.find(id)
+        const {id} = request.params
+        const {type} = request.body
+        const {hour} = request.body
+        const categoryUtil = new CategoryUtil(Category)
+        const categories = await categoryUtil.updateCategory(id,type,hour)
+        return {status:200 , error:undefined , data:categories}
+        // const category = await Category.find(id)
 
-        category.merge({type:type,hour:hour})
-         await category.save()
+        // category.merge({type:type,hour:hour})
+        //  await category.save()
 
     }
     async destroy ({request}){
         const {id} = request.params
-        const category = await Category.find(id)
-        await category.delete()
+        const categoryUtil = new CategoryUtil(Category)
+        const categories = await categoryUtil.deleteCategory(id)
+        return {status:200 , error:undefined , data:categories.message}
+        // const category = await Category.find(id)
+        // await category.delete()
     }
 
 
