@@ -42,13 +42,15 @@ class AccountController {
         return {status:200 , error:undefined , data:accounts || {}}
     }
     async store({request}) {
-        const {username,password} = request.body
         const ValidatedData = await AccountValidator(request.body)
 
+        const {username} = request.body
         if(ValidatedData.error)
             return {status:422 , error:ValidatedData.error , data:undefined}
 
-        await Account.create({username,password})
+        const accountUtil = new AccountUtil(Account)
+        await accountUtil.createAccount(request.body)
+        // await Account.create({username,password})
         return {status:200 , error:undefined , data:`${username} is created succesfully`}
     }
     async update({request}) {
