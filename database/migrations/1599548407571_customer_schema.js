@@ -7,7 +7,7 @@ class CustomerSchema extends Schema {
   up () {
     this.create('customers', (table) => {
       table.increments('customer_id')
-      table.integer('account_id').unsigned()
+      table.integer('account_id').unsigned().references('account_id').inTable('accounts')
       table.string('first_name',120).notNullable()
       table.string('last_name',120).notNullable()
       table.integer('age',3).notNullable()

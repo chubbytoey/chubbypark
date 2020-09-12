@@ -1,6 +1,6 @@
 'use strict'
 
-const User = use('App/Models/User');
+const Account = use('App/Models/Account');
 
 class TestController {
     async register({request, auth, response}) {
@@ -19,14 +19,12 @@ class TestController {
     }
 
     async login({request, auth, response}) {
-        const email = request.input("email")
-        const password = request.input("password");
-
+        const {username} = request.body
+        const {password} = request.body
 
         try {
-          if (await auth.attempt(email, password)) {
-            let user = await User.findBy('email', email)
-
+          if (await auth.attempt(username, password)) {
+            let user = await Account.findBy('username', username)
 
             let accessToken = await auth.generate(user)
             return response.json({"user":user, "access_token": accessToken})

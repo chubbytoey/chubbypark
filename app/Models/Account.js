@@ -18,7 +18,7 @@ class Account extends Model {
         return this.belongsTo('App/Models/Admin')
     }
     customer() {
-        return this.belongsTo('App/Models/Customer')
+        return this.hasMany('App/Models/Customer')
     }
     static boot() {
         super.boot()
@@ -28,6 +28,9 @@ class Account extends Model {
             }
         })
     }
+    tokens () {
+        return this.hasMany('App/Models/Token')
+      }
 }
 
 module.exports = Account

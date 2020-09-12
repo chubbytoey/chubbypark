@@ -23,5 +23,28 @@ class CustomerUtil {
         }
         return customers.fetch()    
     }
+    async deleteUser(accountID) {
+        // await this._Account.table('accounts').where('account_id',accountID).delete()
+
+        // await this._Account.findBy('account_id',accountID).delete()
+        // return {message:'yes'}
+
+        const accounts = await this._Account.findBy('account_id',accountID)
+        if(!accounts) {
+            return {message : 'cant find data'}
+        } else{
+            accounts.delete()
+            await accounts.save()
+            return {message : 'delete success'}
+        }
+    }
+    async updateAccount(accountID,username) {
+        const accountUpdate = await this._Account.findBy('account_id',accountID)
+        accountUpdate.username = username
+        accountUpdate.save()
+
+        const accounts = await this._Account.findBy('account_id',accountID)
+        return accounts
+    }
 }
 module.exports = CustomerUtil
