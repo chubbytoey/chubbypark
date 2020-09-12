@@ -21,7 +21,7 @@ Route.get('/', () => {
 })
 
 Route.group(() => {
-
+  // CRUD ROUTE
   Route.resource('/locations','LocationController')
   Route.resource('/parkinglots','ParkinglotController')
   Route.resource('/categories','CategoryController')
@@ -34,5 +34,21 @@ Route.group(() => {
   Route.get('/logins','AuthController.logout').middleware('auth')
   Route.post('/auth/logins','TestController.login')
   Route.post('/auth/registers','TestController.register')
+
+  // RESERVATION
+  Route.get('/reserve','ReserveController.show')
+  Route.get('/reserve/:id/locations','ReserveController.showLot')
+  Route.put('/reserve/:id','ReserveController.reserve')
+  Route.delete('/reserve/:id','ReserveController.cancel')
+  Route.patch('/reserve/checkin/:id','ReserveController.checkin')
+  Route.patch('/reserve/checkout/:id','ReserveController.checkout')
+  
+  //ADMIN
+  Route.post('/addlot','AdminController.addlot')
+
+
+
+
+
 
 }).prefix('api/v1')
