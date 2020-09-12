@@ -11,7 +11,7 @@ class CreateCategorySchema extends Schema {
       table
         .string('type',20)
       table
-        .smallint('hour',2)
+        .smallint('free_hour',2)
 
       table.timestamps()
     })
