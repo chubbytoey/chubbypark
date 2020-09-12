@@ -13,18 +13,10 @@ class CreateLocationSchema extends Schema {
         .notNullable()
       table
         .float('price_rate')
-      table
-        .integer('category_id')
-        .unsigned()
-        .notNullable()
+      
       table.timestamps()
 
-      table
-        .foreign('category_id')
-        .references('categories.category_id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE')
-
+     
 
     })
   }

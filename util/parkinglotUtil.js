@@ -24,14 +24,14 @@ class ParkingLotUtil {
         const parkinglot = this._ParkingLot.query(id);
 
         return this._withReferences(parkinglot,references)
-            .where("code",id)
+            .where("parkinglot_id",id)
             .fetch()
     }
     async create (parkinglotInstance, references){
-        const {parkinglot_id} = await this._ParkingLot.create(parkinglotInstance)
+        const {parkinglotId} = await this._ParkingLot.create(parkinglotInstance)
         const parkinglot = this._ParkingLot
             .query()
-            .where('code',parkinglot_id)
+            .where('parkinglot_id',parkinglotId)
 
         return this._withReferences(parkinglot,references)
         .fetch()

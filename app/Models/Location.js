@@ -10,6 +10,7 @@ class Location extends Model {
     parkinglot(){
         return this.hasMany('App/Models/Parkinglot')
     }
+    
 }
 
 module.exports = Location

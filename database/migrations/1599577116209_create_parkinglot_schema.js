@@ -7,7 +7,10 @@ class CreateParkinglotSchema extends Schema {
   up () {
     this.create('parkinglots', (table) => {
       table
-        .increments('code')
+        .increments('parkinglot_id')
+      table
+        .string('lot_name',5)
+        .notNullable()
       table
         .string('lot_status',12)
         .notNullable()
@@ -17,7 +20,7 @@ class CreateParkinglotSchema extends Schema {
       table
         .time('checkout')
       table
-        .smallint('hour',2 )
+        .smallint('use_hour',2 )
         .default(0)
       table
         .decimal('price')

@@ -13,7 +13,7 @@ function numberTypeParamValidator(number){
 
 class CategoryController {
 
-    async index(){
+    async index({request}){
         
         const {references = undefined} =request.qs
         const categoryUtil = new CategoryUtil(Category)
