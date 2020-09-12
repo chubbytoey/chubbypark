@@ -14,7 +14,7 @@ function numberTypeParamValidator(number){
 
 class LocationController {
 
-    async index(){
+    async index({request}){
 
         const {references = undefined} =request.qs
         const locationUtil = new LocationUtil(Location)
@@ -72,18 +72,24 @@ class LocationController {
     async update ({request}){
         const {body, params} = request
         const {id} = params
-        const {location_name,price_rate,category_id} = body
-        const location = await Location.find(id)
+        const {location_name,price_rate} = body
+        const locationUtil = new LocationUtil(Location)
+        const locations = await locationUtil.updateLocation(id,location_name,price_rate)
+        return {status:200 , error:undefined , data:locations}
+        // const location = await Location.find(id)
 
-        location.merge({location_name:location_name,price_rate:price_rate,category_id:category_id})
-         await location.save()
+        // location.merge({location_name:location_name,price_rate:price_rate,category_id:category_id})
+        //  await location.save()
 
     }
 
     async destroy ({request}){
         const {id} = request.params
-        const location = await Location.find(id)
-        await location.delete()
+        const locationUtil = new LocationUtil(Location)
+        const locations = await locationUtil.deleteLocation(id)
+        return {status:200 , error:undefined , data:locations.message}
+        // const location = await Location.find(id)
+        // await location.delete()
     }
 
 
