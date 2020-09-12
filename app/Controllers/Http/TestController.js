@@ -7,7 +7,7 @@ class TestController {
       try {
         await auth.check()
         const user = await auth.getUser()
-        // const joinUser = await Database.table('customers').where('account_id',user.account_id)
+        // const joinUser = await Database.table('customers').join('customers).where('account_id',user.account_id)
         // console.log(joinUser[0].first_name)
         if (user.status == 'customer') {
           return 'user'
