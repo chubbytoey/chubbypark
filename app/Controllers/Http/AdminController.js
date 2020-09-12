@@ -1,8 +1,9 @@
 'use strict'
-const Database = use('Database')
-const Admin = use('App/Models/Admin')
-const AdminValidator = require('../../../service/AdminValidator.js')
-const AdminUtil = require('../../../util/AdminUtil')
+
+
+const Location = use('App/Models/Location')
+const ParkingLot = use('App/Models/Parkinglot')
+
 
 function numberTypeParamValidator (number) {
     if(Number.isNaN(parseInt(number))) {
@@ -12,78 +13,51 @@ function numberTypeParamValidator (number) {
 }
 
 class AdminController {
-    async index({request}) {
-        const {references = undefined} = request.qs
 
-        const adminUtil = new AdminUtil(Admin)
-        const admins = await adminUtil.getAll(references)
+    async addlot ({request}) {
+        const {location_name,price_rate,amountOfLot,floor} =request.body
+        const floorLot = amountOfLot / floor
 
-        return {status:200 , error:undefined , data:admins || {}}
-    }
-    async show({request}) {
-        const {id} = request.params
+        const location = new Location();
+        location.location_name = location_name;
+        location.price_rate = price_rate;
 
-        const ValidatedValue = numberTypeParamValidator(id)
+        await location.save()
 
-        if(ValidatedValue.error) {
-            return {status:500 , error:ValidatedValue.error , data:undefined}
+
+        const locationId = await Location
+            .query()
+            .select('location_id')
+            .where('location_name',location_name)
+            .fetch()
+            .then(response => response.first().location_id)
+
+        let i
+        let j
+
+        for( i = 1 ; i<= floor;i+=1){
+            for( j = 1;j<=floorLot;j+=1){
+
+                const parkinglot = new ParkingLot();
+                parkinglot.lot_name = i+"-"+j;
+                parkinglot.category_id = 1;
+                parkinglot.location_id = locationId;
+
+                await parkinglot.save()
+
+            }
+                
         }
-
-        const {references} = request.qs
-        const adminUtil = new AdminUtil(Admin)
-        const admins = await adminUtil.getByID(id,references)
-
-        return {status:200 , error:undefined , data:admins || {}}
+        
+       
+    
+        return floorLot
     }
 
-    async store({request}) {
-        const {first_name,last_name} = request.body
 
-        const ValidatedData = await AdminValidator(request.body)
 
-        if(ValidatedData.error) 
-            return {status:422 , error:ValidatedData.error , data:undefined}
 
-        await Admin.create({first_name,last_name})
-        return {status:200 , error:undefined , data:`created succesfully`}
-    }
-
-    async update({request}) {
-        const {body , params} = request
-
-        const {id} = params
-        const {first_name,last_name} = body
-
-        const ValidatedValue = numberTypeParamValidator(id)
-        if(ValidatedValue.error)
-            return {status:500 , error:ValidatedValue.error , data:undefined}
-
-        const adminID = await Database
-            .table('admins')
-            .where({admin_id:id})
-            .update({first_name,last_name})
-
-        const admin = await Database
-            .table('admins')
-            .where({admin_id:id})
-            .first()
-
-        return {status:200 , error:undefined , data:admin}
-    }
-    async destroy({request}) {
-        const {id} = request.params
-
-        const ValidatedValue = numberTypeParamValidator(id)
-        if(ValidatedValue.error)
-        return {status:500 , error:ValidatedValue.error , data:undefined}
-
-        await Database
-            .table('admins')
-            .where({admin_id:id})
-            .delete()
-
-        return {status:200 , error:undefined , data:{message:'success'}}
-    }
+    
 }
 
 module.exports = AdminController
