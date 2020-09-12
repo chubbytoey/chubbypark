@@ -2,18 +2,18 @@ const Validator = use("Validator")
 module.exports = async function categoryValidator (data) {
     if (typeof data !== 'object') throw new Error()
 
-    const {type,hour} = data
+    const {type,free_hour} = data
 
 
 
     const rules = {
         type:'required',
-        hour:'required'
+        free_hour:'required'
     }
 
 
 const validation =await Validator.validateAll ({
-    type,hour
+    type,free_hour
 },rules)
 
 return{
