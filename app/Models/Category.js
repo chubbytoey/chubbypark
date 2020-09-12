@@ -11,6 +11,9 @@ class Category extends Model {
     parkinglot() {
         return this.belongsToMany('App/Models/Parkinglot')
     }
+    location(){
+        return this.hasMany('App/Models/Location')
+    }
 }
 
 module.exports = Category
