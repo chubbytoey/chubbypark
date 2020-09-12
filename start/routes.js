@@ -35,7 +35,7 @@ Route.group(() => {
 
   // RESERVATION
   Route.get('/reserve','ReserveController.show')
-  Route.get('/reserve/:id/locations','ReserveController.showLot')
+  Route.get('/reserve/:location_id/locations','ReserveController.showLot')
   Route.put('/reserve/:id','ReserveController.reserve')
   Route.delete('/reserve/:id','ReserveController.cancel')
   Route.patch('/reserve/checkin/:id','ReserveController.checkin')
