@@ -30,6 +30,7 @@ class AccountUtil {
         // return {message:'yes'}
 
         const accounts = await this._Account.findBy('account_id',accountID)
+        const users = await this._User.findBy('account_id',accountID)
         if(!accounts) {
             return {message : 'cant find data'}
         } else{
@@ -45,6 +46,9 @@ class AccountUtil {
 
         const accounts = await this._Account.findBy('account_id',accountID)
         return accounts
+    }
+    createAccount(username,password) {
+        const account = await Account.create({username,password})
     }
 
 }
