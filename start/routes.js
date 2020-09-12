@@ -28,7 +28,10 @@ Route.group(() => {
   Route.resource('/Accounts','AccountController')
   Route.resource('/Customers','CustomerController')
   Route.resource('/Admins','AdminController')
+  Route.post('registers','RegisterController.registerAccount')
   Route.post('/logins','AuthController.login')
+  Route.get('/getuser','AuthController.getUser')
+  Route.get('/logins','AuthController.logout').middleware('auth')
   Route.post('/auth/logins','TestController.login')
   Route.post('/auth/registers','TestController.register')
 
