@@ -13,13 +13,19 @@ function numberTypeParamValidator (number) {
 }
 
 class AccountController {
-    async index({request}) {
+    async index({request,auth}) {
+        // try {
+        // await auth.check()
         const {references = undefined} = request.qs
 
         const accountUtil = new AccountUtil(Account)
         const accounts = await accountUtil.getAll(references)
 
         return {status:200 , error:undefined , data:accounts || {}}
+        // }
+        // catch {
+            // return 'here'
+        // }
     }
     async show({request}) {
         const {id} = request.params
@@ -55,17 +61,19 @@ class AccountController {
         if(ValidatedValue.error)
             return {status:500 , error:ValidatedValue.error , data:undefined}
 
-        const accountID = await Database
-            .table('accounts')
-            .where({account_id:id})
-            .update({username})
+        const accountUtil = new AccountUtil(Account)
+        const accounts = await accountUtil.updateAccount(id,username)
+        // const accountID = await Database
+        //     .table('accounts')
+        //     .where({account_id:id})
+        //     .update({username})
 
-        const account = await Database
-            .table('accounts')
-            .where({account_id:id})
-            .first()
+        // const account = await Database
+        //     .table('accounts')
+        //     .where({account_id:id})
+        //     .first()
 
-        return {status:200 , error:undefined , data:account}
+        return {status:200 , error:undefined , data:accounts}
     }
     async destroy({request}) {
         const {id} = request.params
@@ -74,12 +82,14 @@ class AccountController {
         if(ValidatedValue.error)
         return {status:500 , error:ValidatedValue.error , data:undefined}
 
-        await Database
-            .table('accounts')
-            .where({account_id:id})
-            .delete()
+        // await Database
+        //     .table('accounts')
+        //     .where({account_id:id})
+        //     .delete()
+        const accountUtil = new AccountUtil(Account)
+        const accounts = await accountUtil.deleteAccount(id)
 
-        return {status:200 , error:undefined , data:{message:'success'}}
+        return {status:200 , error:undefined , data:{message:accounts.message}}
     }
 }
 
