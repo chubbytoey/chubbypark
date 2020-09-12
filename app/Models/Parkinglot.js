@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Parkinglot extends Model {
     static get primaryKey() {
-        return 'code'
+        return 'parkinglot_id'
     }
 
     location (){
