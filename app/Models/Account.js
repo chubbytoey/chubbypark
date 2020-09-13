@@ -14,9 +14,6 @@ class Account extends Model {
     static get updatedAtColumn() {
         return null
     }
-    admin() {
-        return this.belongsTo('App/Models/Admin')
-    }
     customer() {
         return this.hasMany('App/Models/Customer')
     }
