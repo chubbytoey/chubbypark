@@ -11,6 +11,7 @@ class CreateLocationSchema extends Schema {
       table
         .string('location_name',100)
         .notNullable()
+        .unique()
       table
         .float('price_rate')
       
