@@ -40,6 +40,22 @@ Factory.blueprint('App/Models/Parkinglot', (faker) =>{
     }
 })
 
+Factory.blueprint('App/Models/Account', (faker) =>{
+    return{
+        user_name: faker.string(),
+        password: faker.string({min:8})
+    }
+})
+
+Factory.blueprint('App/Models/Customer', (faker) =>{
+    return{
+        first_name: faker.string(),
+        last_name: faker.string(),
+        age : faker.integer(),
+        gender : faker.string()
+    }
+})
+
 
 // const Factory = use('Factory')
 

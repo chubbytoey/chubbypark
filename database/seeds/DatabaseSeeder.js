@@ -27,7 +27,13 @@ class DatabaseSeeder {
     .model('App/Models/Parkinglot')
     .createMany(20)
 
+    const accounts = await Factory
+    .model('App/Models/Account')
+    .createMany(20)
 
+    const customers = await Factory
+    .model('App/Models/Customer')
+    .createMany(20)
 
   }
 }
