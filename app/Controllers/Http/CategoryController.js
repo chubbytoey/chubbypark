@@ -43,7 +43,7 @@ class CategoryController {
         }
     }
     async store ({request}){
-        const {type,hour} = request.body
+        const {type,free_hour} = request.body
         const validatedData = await CategoryValidator(request.body)
 
         if (validatedData.error)
@@ -52,7 +52,7 @@ class CategoryController {
        
         const {references = undefined} =request.qs
         const categoryUtil = new CategoryUtil(Category)
-        const category =  await categoryUtil.create({type,hour},references)
+        const category =  await categoryUtil.create({type,free_hour},references)
 
         
         await category.save()
@@ -62,9 +62,9 @@ class CategoryController {
     async update ({request}){
         const {id} = request.params
         const {type} = request.body
-        const {hour} = request.body
+        const {free_hour} = request.body
         const categoryUtil = new CategoryUtil(Category)
-        const categories = await categoryUtil.updateCategory(id,type,hour)
+        const categories = await categoryUtil.updateCategory(id,type,free_hour)
         return {status:200 , error:undefined , data:categories}
         // const category = await Category.find(id)
 
