@@ -25,18 +25,18 @@ class CustomerUtil {
         return customers.fetch()    
     }
 
-    async deleteCustomer(accountID) {
+    async deleteCustomer(customerID) {
         // await this._Account.table('accounts').where('account_id',accountID).delete()
 
         // await this._Account.findBy('account_id',accountID).delete()
         // return {message:'yes'}
 
-        const accounts = await this._Account.findBy('account_id',accountID)
-        if(!accounts) {
+        const customers = await this._Customer.findBy('customer_id',customerID)
+        if(!customers) {
             return {message : 'cant find data'}
-        } else{
-            accounts.delete()
-            await accounts.save()
+        } else {
+            customers.delete()
+            await customers.save()
             return {message : 'delete success'}
         }
     }
@@ -51,7 +51,7 @@ class CustomerUtil {
         customerUpdate.previllage = previllage
         customerUpdate.reservation = reservation
         customerUpdate.cancle = cancle
-        customerUpdate.coin =coin
+        customerUpdate.coin = coin
         await customerUpdate.save()
 
         const customers = await this._Customer.findBy('customer_id',customerID)
