@@ -51,8 +51,7 @@ class ParkingLotController {
             location_id,
             customer_id
         } = request.body
- 
-            const validatedData = await ParkingLotValidator(request.body)
+ cata = await ParkingLotValidator(request.body)
 
         if (validatedData.error)
             return{status: 422,error: validatedData.error,data: undefined}
@@ -91,26 +90,33 @@ class ParkingLotController {
             location_id,
             customer_id
         } = body
-        const parkinglot = await ParkingLot.find(id)
+        // const parkinglot = await ParkingLot.find(id)
 
-        category.merge({
-            lot_name:lot_name,
-            lot_status:lot_status,
-            checkin:checkin,
-            checkout:checkout,
-            price:price,
-            use_hour:use_hour,
-            category_id:category_id,
-            location_id:location_id,
-            customer_id:customer_id
-        })
-         await parkinglot.save()
+        // category.merge({
+        //     lot_name:lot_name,
+        //     lot_status:lot_status,
+        //     checkin:checkin,
+        //     checkout:checkout,
+        //     price:price,
+        //     use_hour:use_hour,
+        //     category_id:category_id,
+        //     location_id:location_id,
+        //     customer_id:customer_id
+        // })
+        //  await parkinglot.save()
+        const parkingLotsUtil = new ParkingLotUtil(ParkingLot)
+        const parkingLots = await parkingLotsUtil.updateParkingLots(params,body)
+        return {status:200 , error:undefined , data:parkingLots}
 
     }
     async destroy ({request}){
         const {id} = request.params
-        const parkinglot = await ParkingLot.find(id)
-        await parkinglot.delete()
+        // const parkinglot = await ParkingLot.find(id)
+        // await parkinglot.delete()
+        const parkingLotsUtil = new ParkingLotUtil(ParkingLot)
+        const parkingLots = await parkingLotsUtil.deleteParkingLots(id)
+        return {status:200 , error:undefined , data:parkingLots}
+
     }
 
 

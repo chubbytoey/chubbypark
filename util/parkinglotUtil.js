@@ -37,6 +37,33 @@ class ParkingLotUtil {
         .fetch()
         .then(response => response.first())
     }
+    async deleteParkingLots(parkingID) {
+
+        const parkingLots = await this._ParkingLot.findBy('parkinglot_id',parkingID)
+        if(!parkingLots) {
+            return {message : 'cant find data'}
+        } else{
+            parkingLots.delete()
+            await parkingLots.save()
+            return {message : 'delete success'}
+        }
+    }
+    async updateParkingLots(parkingID,lot_name,lot_status,checkin,checkout,price,use_hour,category_id,location_id,customer_id) {
+        const parkingLotsUpdate = await this._ParkingLot.findBy('parkinglot_id',parkingID)
+        parkingLotsUpdate.lot_name = lot_name
+        parkingLotsUpdate.lot_status = lot_status
+        parkingLotsUpdate.checkin = checkin
+        parkingLotsUpdate.checkout = checkout
+        parkingLotsUpdate.price = price
+        parkingLotsUpdate.use_hour = use_hour
+        parkingLotsUpdate.category_id = category_id
+        parkingLotsUpdate.location_id = location_id
+        parkingLotsUpdate.customer_id = customer_id
+        await parkingLotsUpdate.save()
+
+        const parkingLots = await this._ParkingLot.findBy('parkinglot_id',parkingID)
+        return parkingLots
+    }
 
 
 
