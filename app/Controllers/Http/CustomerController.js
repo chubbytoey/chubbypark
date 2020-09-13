@@ -1,7 +1,6 @@
 'use strict'
 
 const CustomerValidator = require("../../../service/CustomerValidator.js")
-const Database = use('Database')
 const Customer = use('App/Models/Customer')
 const CustomerUtil = require('../../../util/CustomerUtil')
 
@@ -21,6 +20,7 @@ class CustomerController {
 
         return {status:200 , error:undefined , data:customers || {}}
     }
+
     async show({request}) {
         const {id} = request.params
 
@@ -55,23 +55,25 @@ class CustomerController {
         const {body , params} = request
 
         const {id} = params
-        const {first_name,last_name,age,gender} = body
+        const {account_id,first_name,last_name,age,gender,user_rate,previllage,reservation,cancle,coin} = body
 
         const ValidatedValue = numberTypeParamValidator(id)
         if(ValidatedValue.error)
             return {status:500 , error:ValidatedValue.error , data:undefined}
 
-        const customerID = await Database
-            .table('customers')
-            .where({customer_id:id})
-            .update({first_name,last_name,age,gender})
+        const customerUtil = new CustomerUtil(Customer)
+        const customers = await customerUtil.updateCustomer(id,account_id,first_name,last_name,age,gender,user_rate,previllage,reservation,cancle,coin)
+        // const customerID = await Database
+        //     .table('customers')
+        //     .where({customer_id:id})
+        //     .update({first_name,last_name,age,gender})
 
-        const customer = await Database
-            .table('customers')
-            .where({customer_id:id})
-            .first()
+        // const customer = await Database
+        //     .table('customers')
+        //     .where({customer_id:id})
+        //     .first()
 
-        return {status:200 , error:undefined , data:customer}
+        return {status:200 , error:undefined , data:customers}
     }
     async destroy({request}) {
         const {id} = request.params
@@ -80,10 +82,8 @@ class CustomerController {
         if(ValidatedValue.error)
         return {status:500 , error:ValidatedValue.error , data:undefined}
 
-        await Database
-            .table('customers')
-            .where({customer_id:id})
-            .delete()
+        const customerUtil = new CustomerUtil(Customer)
+        await customerUtil.deleteCustomer(id)
 
         return {status:200 , error:undefined , data:{message:'success'}}
     }
