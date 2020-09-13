@@ -21,7 +21,7 @@ const Factory = use('Factory')
 Factory.blueprint('App/Models/Category', (faker) =>{
     return{
         type: faker.string(),
-        hour: faker.hour({min:1,max:3})
+        free_hour: faker.hour({min:1,max:3})
     }
 })
 

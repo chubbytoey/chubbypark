@@ -17,15 +17,7 @@ class DatabaseSeeder {
   async run () {
     const categories =  await Factory
     .model('App/Models/Category')
-    .createMany(3)
-
-    const locations =  await Factory
-    .model('App/Models/Location')
-    .createMany(10)
-
-    const parkinglots =  await Factory
-    .model('App/Models/Parkinglot')
-    .createMany(20)
+    .createMany(4)
 
     const accounts = await Factory
     .model('App/Models/Account')
