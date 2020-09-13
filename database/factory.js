@@ -27,7 +27,7 @@ Factory.blueprint('App/Models/Category', (faker) =>{
 
 Factory.blueprint('App/Models/Location', (faker) =>{
     return{
-        location_name: faker.string(),
+        location_name: faker.word(),
         price_rate: faker.floating({min:0,max:100,fixed:2}),
         category_id: faker.integer({min:1,max:3})
     }
@@ -42,17 +42,17 @@ Factory.blueprint('App/Models/Parkinglot', (faker) =>{
 
 Factory.blueprint('App/Models/Account', (faker) =>{
     return{
-        user_name: faker.string(),
-        password: faker.string({min:8})
+        username: faker.username(),
+        password: faker.password({min:8})
     }
 })
 
 Factory.blueprint('App/Models/Customer', (faker) =>{
     return{
-        first_name: faker.string(),
-        last_name: faker.string(),
-        age : faker.integer(),
-        gender : faker.string()
+        first_name: faker.word(),
+        last_name: faker.word(),
+        age : faker.integer({min:1,max:3}),
+        gender : faker.gender()
     }
 })
 
