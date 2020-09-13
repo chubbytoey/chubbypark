@@ -15,7 +15,7 @@ class CustomerSchema extends Schema {
       table.integer('user_rate',1).default(0)
       table.string('previllage',20)
       table.integer('reservation').default(0)
-      table.integer('cancle').default(0)
+      table.integer('cancel').default(0)
       table.integer('coin').default(0)
       table.timestamps()
     })
