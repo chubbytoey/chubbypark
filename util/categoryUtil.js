@@ -47,10 +47,10 @@ class CategoryUtil {
             return {message : 'delete success'}
         }
     }
-    async updateCategory(categoryID,type,hour) {
+    async updateCategory(categoryID,type,free_hour) {
         const categoryUpdate = await this._Category.findBy('category_id',categoryID)
         categoryUpdate.type = type
-        categoryUpdate.hour = hour
+        categoryUpdate.free_hour = freee_hour
         await categoryUpdate.save()
 
         const category = await this._Category.findBy('category_id',categoryID)
