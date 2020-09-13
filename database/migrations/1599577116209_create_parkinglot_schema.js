@@ -16,16 +16,9 @@ class CreateParkinglotSchema extends Schema {
         .notNullable()
         .default("available")
       table
+        .time('reserve_time')
+      table
         .time('checkin')
-      table
-        .time('checkout')
-      table
-        .smallint('use_hour',2 )
-        .default(0)
-      table
-        .decimal('price')
-        .notNullable()
-        .default(0)
       table
         .integer('category_id')
         .unsigned()
