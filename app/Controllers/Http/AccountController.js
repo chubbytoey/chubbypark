@@ -16,11 +16,11 @@ class AccountController {
         try {
             await auth.check()
             const user = await auth.getUser()
+
+            const { references = undefined } = request.qs
             if (user.status == 'customer') {
                 return 'only admin can see the information'
             } else {
-
-                const { references = undefined } = request.qs
 
                 const accountUtil = new AccountUtil(Account)
                 const accounts = await accountUtil.getAll(references)
@@ -128,7 +128,7 @@ class AccountController {
         }
 
     }
-    async destroy({ request ,auth }) {
+    async destroy({ request, auth }) {
         const { id } = request.params
 
         const ValidatedValue = numberTypeParamValidator(id)
@@ -141,7 +141,7 @@ class AccountController {
             if (user.status == 'admin' || user.status == 'customer' && user.account_id == id) {
                 const accountUtil = new AccountUtil(Account)
                 const accounts = await accountUtil.deleteAccount(id)
-        
+
                 return { status: 200, error: undefined, data: { message: accounts.message } }
             } else {
                 return 'only admin or own account can delete the information'
