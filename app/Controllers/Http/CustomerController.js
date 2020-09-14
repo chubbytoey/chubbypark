@@ -63,16 +63,15 @@ class CustomerController {
             const { first_name, last_name, age, gender } = request.body
             const ValidatedData = await CustomerValidator(request.body)
 
+            const {references} = request.qs
             if (ValidatedData.error) {
                 return { status: 422, error: ValidatedData.error, data: undefined }
             }
             if (user.status == 'customer') {
                 return 'only admin can access the information'
             } else {
-
                 const customerUtil = new CustomerUtil(Customer)
-                await customerUtil.createCustomer(first_name,last_name,age,gender)
-
+                await customerUtil.createCustomer({first_name,last_name,age,gender},references)
 
                 return { status: 200, error: undefined, data: `created succesfully` }
             }
