@@ -3,12 +3,12 @@
 const { test } = use('Test/Suite')('Account Validator')
 const accountValidator = require('../../service/AccountValidator')
 
-test('should receive object as first parametre', async ({ assert }) => {
+test('should return undefined error when input correct data', async ({ assert }) => {
   const validatedData = await accountValidator({
-    username : "chubbytoey",
+    username : "sarang",
     password : "12345678"
   })
-  assert.isOk(validatedData)
+  assert.equal(validatedData.error,undefined)
 })
 
 test('should return error if input incorrect data', async ({ assert }) => {
@@ -20,16 +20,15 @@ test('should return error if input incorrect data', async ({ assert }) => {
 })
 test('should return only one error if input incorrect password', async ({ assert }) => {
   const validatedData = await accountValidator({
-    username : "chubbytoey",
-    password : "toey"
+    username : "sayhi",
+    password : "1"
   })
   assert.equal(validatedData.error.length , 1)
 })
 test('should return error if input not unique username' , async ({assert}) => {
   const validatedData = await accountValidator({
-    username: "hihi",
+    username: "chubbytoey",
     password : "12345678"
   })
-  console.log(validatedData.error)
-  assert.deepEqual({field:'username'},{field:'username'})
+  assert.isOk(validatedData.error)
 })
