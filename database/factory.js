@@ -17,9 +17,17 @@ const Database = use('Database')
 // const Location= use('App/Models/Location')
 // const maximumLocation = Location.query("SELECT COUNT(location_id) FROM locations ")
 
-const countLocation = await Database.from('locations').getCount()
-const countCustomer = await Database.from('customers').getCount()
-const countCategory = await Database.from('categories').getCount()
+async function getLocation(){
+    return await Database.from('locations').getCount()
+}
+async function getCategory(){
+    return await Database.from('categories').getCount()
+}
+async function getCustomer(){
+    return await Database.from('customers').getCount()
+}
+
+
 
 
 Factory.blueprint('App/Models/Category', (faker) =>{
@@ -60,9 +68,9 @@ Factory.blueprint('App/Models/Parkinglot', (faker) =>{
         lot_status : faker.word(),
         reserve_time : faker.timestamp(),
         checkin: faker.timestamp(),
-        customer: faker.integer({min:1,max:countCustomer}),
-        location_id: faker.integer({min:1,max:countLocation}),
-        category_id: faker.integer({min:1,max:countCategory})
+        customer: faker.integer({min:1,max: getCustomer()}),
+        location_id: faker.integer({min:1,max:getLocation()}),
+        category_id: faker.integer({min:1,max:getCategory()})
     }
 })
 
