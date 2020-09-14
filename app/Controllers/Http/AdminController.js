@@ -5,95 +5,87 @@ const Location = use('App/Models/Location')
 const ParkingLot = use('App/Models/Parkinglot')
 const Category = use('App/Models/Category')
 
-function numberTypeParamValidator (number) {
-    if(Number.isNaN(parseInt(number))) {
-        return {error:`param: ${number} is not supported, please use number type param instead`}
-    }
-    return {}
-}
-
 class AdminController {
 
-    async addlot ({request}) {
-        const {location_name,price_rate,amountOfLot,floor} =request.body
-        const floorLot = amountOfLot / floor
+    async addlot({ request, auth }) {
+        try {
+            await auth.check()
+            const user = await auth.getUser()
+            if (user.status == 'admin') {
+                const { location_name, price_rate, amountOfLot, floor } = request.body
+                const floorLot = amountOfLot / floor
 
-        const location = new Location();
-        location.location_name = location_name;
-        location.price_rate = price_rate;
+                const location = new Location();
+                location.location_name = location_name;
+                location.price_rate = price_rate;
 
-        await location.save()
+                await location.save()
 
+                const locationId = await Location
+                    .query()
+                    .select('location_id')
+                    .where('location_name', location_name)
+                    .fetch()
+                    .then(response => response.first().location_id)
 
-        const locationId = await Location
-            .query()
-            .select('location_id')
-            .where('location_name',location_name)
-            .fetch()
-            .then(response => response.first().location_id)
+                let i
+                let j
 
-        let i
-        let j
+                for (i = 1; i <= floor; i += 1) {
+                    for (j = 1; j <= floorLot; j += 1) {
 
-        for( i = 1 ; i<= floor;i+=1){
-            for( j = 1;j<=floorLot;j+=1){
+                        const parkinglot = new ParkingLot();
+                        parkinglot.lot_name = i + "-" + j;
+                        parkinglot.category_id = 1;
+                        parkinglot.location_id = locationId;
 
-                const parkinglot = new ParkingLot();
-                parkinglot.lot_name = i+"-"+j;
-                parkinglot.category_id = 1;
-                parkinglot.location_id = locationId;
-
-                await parkinglot.save()
-
+                        await parkinglot.save()
+                    }
+                }
+                return 'success'
+            } else {
+                return 'only admin can add the information'
             }
-                
+        } catch {
+            return 'only admin can add the information'
         }
-        
-       
-    
-        return 'success'
-    }
-    async addType({request}){
-
-        let type =["normal","female","disabled","vip"]
-        let category 
-        let i
-        for(i=0;i<type.length;i++){
-
-            if(type[i]=="normal"||type[i]=="female"){
-
-                category = new Category();
-
-                category.type = type[i];
-                category.free_hour = 2;
-
-                await category.save()
-
-            }else if(type[i]=="disabled"||type[i]=="vip"){
-
-                
-                category = new Category();
-            
-                category.type = type[i];
-                category.free_hour = 3;
-            
-                await category.save()
-
-            }
-
-
-        }
-        
-
-
-
-
 
     }
+    async addType({ request, auth }) {
 
+        try {
+            await auth.check()
+            const user = await auth.getUser()
+            if (user.status == 'admin') {
 
+                let type = ["normal", "female", "disabled", "vip"]
+                let category
+                let i
+                for (i = 0; i < type.length; i++) {
 
-    
+                    if (type[i] == "normal" || type[i] == "female") {
+
+                        category = new Category();
+                        category.type = type[i];
+                        category.free_hour = 2;
+                        await category.save()
+
+                    } else if (type[i] == "disabled" || type[i] == "vip") {
+
+                        category = new Category();
+                        category.type = type[i];
+                        category.free_hour = 3;
+                        await category.save()
+
+                    }
+                }
+            } else {
+                return 'only admin can add the information'
+            }
+        } catch {
+            return 'only admin can add the information'
+        }
+    }
 }
 
 module.exports = AdminController
