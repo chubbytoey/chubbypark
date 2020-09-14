@@ -40,7 +40,7 @@ class CustomerUtil {
             return {message : 'delete success'}
         }
     }
-    async updateCustomer(customerID,account_id,first_name,last_name,age,gender,user_rate,previllage,reservation,cancle,coin) {
+    async updateCustomer(customerID,account_id,first_name,last_name,age,gender,user_rate,previllage,reservation,cancel,coin) {
         const customerUpdate = await this._Customer.findBy('customer_id',customerID)
         customerUpdate.account_id = account_id
         customerUpdate.first_name = first_name
@@ -50,7 +50,7 @@ class CustomerUtil {
         customerUpdate.user_rate = user_rate
         customerUpdate.previllage = previllage
         customerUpdate.reservation = reservation
-        customerUpdate.cancle = cancle
+        customerUpdate.cancel = cancel
         customerUpdate.coin = coin
         await customerUpdate.save()
 

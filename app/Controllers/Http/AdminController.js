@@ -3,7 +3,7 @@
 
 const Location = use('App/Models/Location')
 const ParkingLot = use('App/Models/Parkinglot')
-
+const Category = use('App/Models/Category')
 
 function numberTypeParamValidator (number) {
     if(Number.isNaN(parseInt(number))) {
@@ -51,9 +51,45 @@ class AdminController {
         
        
     
-        return floorLot
+        return 'success'
     }
+    async addType({request}){
 
+        let type =["normal","female","disabled","vip"]
+        let category 
+        let i
+        for(i=0;i<type.length;i++){
+
+            if(type[i]=="normal"||type[i]=="female"){
+
+                category = new Category();
+
+                category.type = type[i];
+                category.free_hour = 2;
+
+                await category.save()
+
+            }else if(type[i]=="disabled"||type[i]=="vip"){
+
+                
+                category = new Category();
+            
+                category.type = type[i];
+                category.free_hour = 3;
+            
+                await category.save()
+
+            }
+
+
+        }
+        
+
+
+
+
+
+    }
 
 
 

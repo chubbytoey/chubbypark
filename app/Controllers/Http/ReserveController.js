@@ -12,22 +12,72 @@ function numberTypeParamValidator(number){
     return {}
 }
 
-function reserveTimer(userData,lotData){
+function reserveTimer(userData,lotReserve){
+   
     
-    const date =new Date();
-    const timeOut = date.setHours(date.getHours() + 2);
+
+    const timeOut =new Date();
+    timeOut.setSeconds(timeOut.getSeconds() +30)
 
     let job = new CronJob(timeOut, async function() {
-        
-        await lotData.merge({lot_status:"available",reserve_time:null,customer_id:null})
-        await userData.merge({cancel:userData.cancel+1})
+        console.log(userData)
+        console.log(lotReserve)
+
+        lotReserve.merge({lot_status:"available",reserve_time:null,customer_id:null})
+        await lotReserve.save()
+        userData.merge({cancel:userData.cancel+1})
+        await userData.save()
 
     });
 
     return job
 }
 
-let timer
+let timer;
+
+async function checkToken({auth}){
+    try {
+        await auth.check()
+        
+        return true
+
+    } catch (error) {
+        return {error: 'error' }
+    }
+
+}
+
+function getFullDate(){
+    const date = new Date()
+   
+    return {    year: date.getFullYear(),
+                month: date.getMonth()+1,
+                day: date.getDate(),
+                hour:date.getHours(),
+                minute:date.getMinutes(),
+                second:date.getSeconds()
+            }
+
+}
+
+function timeFormat(timeMilisecond){
+    
+
+    let seconds = Math.floor(timeMilisecond/1000);
+    let minutes =Math.floor(seconds/60);
+    seconds = seconds%60;
+    let hours = Math.floor(minutes/60);
+    minutes =minutes%60;
+
+    const time = hours+":"+minutes+":"+seconds;
+    
+
+    return time
+
+}
+
+
+
 
 
 class ReserveController {
@@ -46,18 +96,26 @@ class ReserveController {
     }
     async showLot ({request,auth}){
         
-         const {location_id} = request.params
+         
+        const checkLogin = checkToken(auth)
+     
+        if(checkLogin.error){
+            return 'please login'
 
-        const {references = undefined} =request.qs
-        let lots 
+        }else{
 
-        if (references){
-            const extractedReferences = references.split(",")
-            lots.with(extractedReferences)
-        }
 
-        try {
-            await auth.check()
+            const {location_id} = request.params
+
+            const {references = undefined} =request.qs
+            let lots 
+
+            if (references){
+                const extractedReferences = references.split(",")
+                lots.with(extractedReferences)
+            }
+
+
             const token = await auth.getUser()
 
             const userData = await Customer.findBy('account_id',token.account_id)
@@ -93,21 +151,25 @@ class ReserveController {
             return lots
 
 
-          } catch (error) {
-
-            return await ParkingLot.query().where({location_id:location_id}).fetch()
-          }
+          } 
 
     }
 
     async reserve ({request,auth}){
-        const {body,params} = request
-        const {lot_name} = body
-        const {location_id} = params
-       
-  
-        try {
-            await auth.check()
+
+        
+        const checkLogin = checkToken(auth)
+
+        if(checkLogin.error){
+            return 'please login'
+
+        }else{
+            
+            const {body,params} = request
+            const {lot_name} = body
+            const {location_id} = params
+
+
             const token = await auth.getUser()
 
             const userData = await Customer.findBy('account_id',token.account_id)
@@ -117,17 +179,23 @@ class ReserveController {
             let date = new Date();
             let time = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds(); 
 
-            if(lotReserve.lot_status, "availble"){
+            if(lotReserve.lot_status ==  "available"){
+
                 lotReserve.merge({
+
                     lot_status:"unavailable",
                     customer_id:userData.customer_id,
-                    reserve_time:time})
+                    reserve_time:time
+                })
+
                 await lotReserve.save() 
 
                 userData.merge({
                     reservation: userData.reservation+1,
                 })
                 await userData.save()
+               
+        
 
                 timer = reserveTimer(userData,lotReserve)
                 timer.start();
@@ -138,21 +206,21 @@ class ReserveController {
             }else{
                 return 'this lot is unavailable'
             }
+            
 
-
-
-          
-          } catch (error) {
-
-            return 'please login first'
-          }
+        }
+        
 
     }
 
     async checkin ({auth}){
 
-        try {
-            await auth.check()
+        const checkLogin = checkToken(auth)
+
+        if(checkLogin.error){
+            return 'please login'
+
+        }else{
             const token = await auth.getUser()
 
             const userData = await Customer.findBy('account_id',token.account_id)
@@ -172,47 +240,56 @@ class ReserveController {
             return 'check in'
 
 
-          } catch (error) {
+        }
 
-            return 'you have not reserved any lot '
-            
-          }
+    
     }
 
     async checkout ({auth}){
 
-        try {
-            await auth.check()
+    
+        const checkLogin = checkToken(auth)
+
+        if(checkLogin.error){
+            
+            return 'please login'
+
+        }else{
+
             const token = await auth.getUser()
 
-            const userData = await Customer.findBy('account_id',token.account_id)
-            
+            const userData = await Customer.findBy('account_id',token.account_id)            
             const lotData = await ParkingLot.findBy('customer_id',userData.customer_id)
-            
             const categoryData = await Category.findBy('category_id',lotData.category_id)
-
             const locationData = await Location.findBy('location_id',lotData.location_id) 
 
-            let date = new Date();
-            let time = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds(); 
-            let checkOut = new Date(date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+time)
-            let checkIn = new Date(date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+lotData.checkin)
 
-            let duration = Date.parse(checkOut) - Date.parse(checkIn);
+            const date = getFullDate();
+
+            let dateFormat = date.year+"-"+date.month+"-"+date.day;
+
+            console.log(dateFormat)
+
+            let checkOut = new Date(dateFormat+" "+date.hour+":"+date.minute+":"+date.second)
+            let checkIn = new Date(dateFormat+" "+lotData.checkin)
+
+          
+            const duration =Date.parse(checkOut)-Date.parse(checkIn);
             
-            let second = Math.floor(duration/1000);
-            let minutes =Math.floor(second/60);
-            second = second%60;
-            let hour = Math.floor(minutes/60);
-            minutes =minutes%60;
-            let useHour = hour+":"+minutes+":"+second
+            
 
-            let paidHour = parseInt(Math.ceil(duration/3600000))
+            const useHour = timeFormat(duration)
+
+            const paidHour = parseInt(Math.ceil(duration/3600000))
+
+
+
+
+
 
             if (paidHour>categoryData.free_hour){
 
-               let price =  paidHour*locationData.price_rate
-
+               let price =  paidHour*locationData.price_rate;
 
                 userData.merge({coin:userData.coin - price})
                
@@ -221,15 +298,12 @@ class ReserveController {
 
                 return 'Check out success , use time : '+useHour+' price : '+price+' remain coin : '+ userData.coin
             }else{
-
+                lotData.merge({lot_status:"available",customer_id:null,reserve_time:null,checkin:null})
+                await lotData.save()
                 return 'Check out success , use time : '+useHour+' price : 0'
             }
 
 
-          } catch (error) {
-
-            return 'you have not reserved any lot yet '
-            
           }
 
 
@@ -237,8 +311,13 @@ class ReserveController {
 
     async cancel ({auth}){
 
-        try {
-            await auth.check()
+     
+        const checkLogin = checkToken(auth)
+
+        if(checkLogin.error){
+            return 'please login'
+
+        }else{
             const token = await auth.getUser()
 
             const userData = await Customer.findBy('account_id',token.account_id)
@@ -261,13 +340,17 @@ class ReserveController {
             return 'cancelled'
 
 
-          } catch (error) {
-
-            return 'you have not reserved any lot '
-            
           }
 
 
+
+    }
+
+    async test ({auth}){
+
+        const date = getFullDate()
+        
+        return  date.year
 
     }
 
