@@ -12,6 +12,6 @@ module.exports = async function accountValidator(data) {
     const validation = await Validator.validateAll({username,password},rules)
 
     return {
-        error:validation.messages()
+        error:validation.messages() || undefined
     }
 }
