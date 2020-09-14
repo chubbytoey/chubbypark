@@ -44,15 +44,12 @@ class ParkingLotController {
             lot_name,
             lot_status,
             checkin,
-            checkout,
-            price,
-            use_hour,
             category_id,
             location_id,
             customer_id
         } = request.body
- cata = await ParkingLotValidator(request.body)
 
+       const validatedData = await ParkingLotValidator(request.body)
         if (validatedData.error)
             return{status: 422,error: validatedData.error,data: undefined}
         
@@ -63,8 +60,6 @@ class ParkingLotController {
                 lot_name,
                 lot_status,
                 checkin,
-                checkout,
-                price,
                 category_id,
                 location_id,
                 customer_id
@@ -83,9 +78,6 @@ class ParkingLotController {
             lot_name,
             lot_status,
             checkin,
-            checkout,
-            price,
-            use_hour,
             category_id,
             location_id,
             customer_id
