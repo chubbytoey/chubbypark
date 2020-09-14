@@ -5,16 +5,16 @@ class ParkinglotUtil {
     constructor(ParkinglotModel){
         this._ParkingLot = ParkinglotModel
     }
-    // _withReferences(model,references) {
-    //     if (references){
-    //         const extractedReferences = references.split(",")
-    //         extractedReferences.forEach((ref) => {
-    //             model.with(ref);
-    //         });
+    _withReferences(model,references) {
+        if (references){
+            const extractedReferences = references.split(",")
+            extractedReferences.forEach((ref) => {
+                model.with(ref);
+            });
             
-    //     }
-    //     return model;
-    // }
+        }
+        return model;
+    }
 
     getAll(references) {
         const parkinglots = this._ParkingLot.query()
@@ -45,16 +45,22 @@ class ParkinglotUtil {
         }
         return parkinglots.fetch()    
     }  
-    async create (parkinglotInstance, references){
+    // async createParkingLot (lot_name,lot_status,reserve_time,checkin,category_id,location_id,customer_id){
+    //     const parkingLots = await this._ParkingLot.create({lot_name,lot_status,reserve_time,checkin,category_id,location_id,customer_id})
+    //     console.log('kuay')
+    // }
+
+    async createParkingLots(parkinglotInstance, references){
         const {parkinglotId} = await this._ParkingLot.create(parkinglotInstance)
         const parkinglot = this._ParkingLot
             .query()
             .where('parkinglot_id',parkinglotId)
 
-        return this._withReferences(parkinglot,references)
+        return this._withReference(parkinglot,references)
         .fetch()
         .then(response => response.first())
     }
+
     async deleteParkingLots(parkingID) {
 
         const parkingLots = await this._ParkingLot.findBy('parkinglot_id',parkingID)
@@ -81,7 +87,13 @@ class ParkinglotUtil {
         return parkingLots
     }
 
-
+    _withReference(instance, references) {
+        if (references) {
+            const extractedReferences = references.split(",")
+            instance.with(extractedReferences)
+        }
+        return instance
+    }
 
 }
 module.exports = ParkinglotUtil
