@@ -43,6 +43,7 @@ class ParkingLotController {
         const {
             lot_name,
             lot_status,
+            reserve_time,
             checkin,
             category_id,
             location_id,
@@ -59,6 +60,7 @@ class ParkingLotController {
             .create( {
                 lot_name,
                 lot_status,
+                reserve_time,
                 checkin,
                 category_id,
                 location_id,
@@ -73,29 +75,7 @@ class ParkingLotController {
     }
     async update ({request}){
         const {body, params} = request
-        const {id} = params
-        const {
-            lot_name,
-            lot_status,
-            checkin,
-            category_id,
-            location_id,
-            customer_id
-        } = body
-        // const parkinglot = await ParkingLot.find(id)
-
-        // category.merge({
-        //     lot_name:lot_name,
-        //     lot_status:lot_status,
-        //     checkin:checkin,
-        //     checkout:checkout,
-        //     price:price,
-        //     use_hour:use_hour,
-        //     category_id:category_id,
-        //     location_id:location_id,
-        //     customer_id:customer_id
-        // })
-        //  await parkinglot.save()
+       
         const parkingLotsUtil = new ParkingLotUtil(ParkingLot)
         const parkingLots = await parkingLotsUtil.updateParkingLots(params,body)
         return {status:200 , error:undefined , data:parkingLots}
@@ -103,8 +83,7 @@ class ParkingLotController {
     }
     async destroy ({request}){
         const {id} = request.params
-        // const parkinglot = await ParkingLot.find(id)
-        // await parkinglot.delete()
+      
         const parkingLotsUtil = new ParkingLotUtil(ParkingLot)
         const parkingLots = await parkingLotsUtil.deleteParkingLots(id)
         return {status:200 , error:undefined , data:parkingLots}

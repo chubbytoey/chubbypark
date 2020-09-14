@@ -4,13 +4,31 @@ const Location = use('App/Models/Location')
 const ParkingLot = use('App/Models/Parkinglot')
 const Customer =use('App/Models/Customer')
 const Category =use('App/Models/Category')
-
+const CronJob = require('cron').CronJob;
 
 function numberTypeParamValidator(number){
     if(Number.isNaN(parseInt(number)))
         return { error: `param: ${number} is not supported, please use number type param instead.` }
     return {}
 }
+
+function reserveTimer(userData,lotData){
+    
+    const date =new Date();
+    const timeOut = date.setHours(date.getHours() + 2);
+
+    let job = new CronJob(timeOut, async function() {
+        
+        await lotData.merge({lot_status:"available",reserve_time:null,customer_id:null})
+        await userData.merge({cancel:userData.cancel+1})
+
+    });
+
+    return job
+}
+
+let timer
+
 
 class ReserveController {
 
@@ -111,6 +129,11 @@ class ReserveController {
                 })
                 await userData.save()
 
+                timer = reserveTimer(userData,lotReserve)
+                timer.start();
+
+
+
                 return 'success'
             }else{
                 return 'this lot is unavailable'
@@ -144,6 +167,8 @@ class ReserveController {
             lotData.merge({checkin:time})
             await lotData.save()
             
+            timer.stop();
+
             return 'check in'
 
 

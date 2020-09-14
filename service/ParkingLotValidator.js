@@ -5,10 +5,8 @@ module.exports = async function parkinglotValidator (data) {
     const {
         lot_name,
         lot_status,
+        reserve_time,
         checkin,
-        checkout,
-        price,
-        use_hour,
         category_id,
         location_id,
         customer_id
@@ -19,10 +17,8 @@ module.exports = async function parkinglotValidator (data) {
     const rules = {
         lot_name:'required',
         lot_status:'required',
-        price:'required',
+        reserve_time:'required',
         checkin:'required',
-        checkout:'required',
-        use_hoyr:'required',
         customer_id:'required',
         location_id:'required',
         category_id:'required'
@@ -32,10 +28,8 @@ module.exports = async function parkinglotValidator (data) {
 const validation =await Validator.validateAll ({
     lot_name,
     lot_status,
+    reserve_time,
     checkin,
-    checkout,
-    price,
-    use_hour,
     category_id,
     location_id,
     customer_id
