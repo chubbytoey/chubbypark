@@ -21,7 +21,7 @@ test('should return error if input incorrect data', async ({ assert }) => {
   assert.isArray(validatedData.error)
 })
 
-test('should return only one error if input incorrect password', async ({ assert }) => {
+test('should return only one error if input incorrect data', async ({ assert }) => {
   const validatedData = await locationValidator({
     location_name : "maya",
     price_rate : "number",
