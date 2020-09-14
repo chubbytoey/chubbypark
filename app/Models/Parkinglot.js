@@ -9,10 +9,10 @@ class Parkinglot extends Model {
     }
 
     location (){
-         return this.belongsToMany('App/Models/Location')
+         return this.belongsTo('App/Models/Location')
     }
     category (){
-        return this.hasMany('App/Models/Category')
+        return this.belongsTo('App/Models/Category')
     }
     
 
