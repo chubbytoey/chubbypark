@@ -49,6 +49,8 @@ Route.group(() => {
   Route.post('/addtype','AdminController.addType')
 
   //register
-  Route.post('registers','RegisterController.registerAccount')
+  Route.post('/registers','RegisterController.registerAccount')
+  Route.get('/registers','RegisterController.index')
+  Route.get('/registers/:id','RegisterController.show')
 
 }).prefix('api/v1')

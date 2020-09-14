@@ -10,6 +10,9 @@ class Customer extends Model {
     account() {
         return this.belongsTo('App/Models/Account')
     }
+    parkinglot() {
+        return this.hasOne('App/Models/Parkinglot')
+    }
 }
 
 module.exports = Customer

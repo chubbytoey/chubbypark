@@ -1,32 +1,50 @@
 
 // const Subject = use("App/Models/Subject")
 
-class ParkingLotUtil {
-    constructor(ParkingLotModel){
-        this._ParkingLot = ParkingLotModel;
+class ParkinglotUtil {
+    constructor(ParkinglotModel){
+        this._ParkingLot = ParkinglotModel
     }
-    _withReferences(model,references) {
-        if (references){
+    // _withReferences(model,references) {
+    //     if (references){
+    //         const extractedReferences = references.split(",")
+    //         extractedReferences.forEach((ref) => {
+    //             model.with(ref);
+    //         });
+            
+    //     }
+    //     return model;
+    // }
+
+    getAll(references) {
+        const parkinglots = this._ParkingLot.query()
+
+        console.log(parkinglots)
+        if(references) {
             const extractedReferences = references.split(",")
-            extractedReferences.forEach((ref) => {
-                model.with(ref);
-            });
+            parkinglots.with(extractedReferences)
         }
-        return model;
+        return parkinglots.fetch()    
     }
 
-    async getAll(references){
-        const parkinglots =this._ParkingLot.query();
-        return this._withReferences(parkinglots,references).fetch();
+    // async getById(id, references){
+    //     const parkinglot = this._ParkingLot.query(id);
 
-    }
-    async getById(id, references){
-        const parkinglot = this._ParkingLot.query(id);
+    //     return this._withReferences(parkinglot,references)
+    //         .where("parkinglot_id",id)
+    //         .fetch()
+    // }
+    getByID(parkinglotID , references) {
+        const parkinglots = this._ParkingLot
+        .query()
+        .where('parkinglot_id',parkinglotID)
 
-        return this._withReferences(parkinglot,references)
-            .where("parkinglot_id",id)
-            .fetch()
-    }
+        if(references) {
+            const extractedReferences = references.split(",")
+            parkinglots.with(extractedReferences)
+        }
+        return parkinglots.fetch()    
+    }  
     async create (parkinglotInstance, references){
         const {parkinglotId} = await this._ParkingLot.create(parkinglotInstance)
         const parkinglot = this._ParkingLot
@@ -66,4 +84,4 @@ class ParkingLotUtil {
 
 
 }
-module.exports = ParkingLotUtil
+module.exports = ParkinglotUtil

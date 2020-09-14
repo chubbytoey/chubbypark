@@ -14,7 +14,9 @@ class Parkinglot extends Model {
     category (){
         return this.belongsTo('App/Models/Category')
     }
-    
+    customer() {
+        return this.belongsTo('App/Models/Customer')
+    }
 
 
 }
