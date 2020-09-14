@@ -74,7 +74,7 @@ class LocationController {
         try {
             await auth.check()
             const user = await auth.getUser()
-            const { location_name, price_rate, category_id } = request.body
+            const { location_name, price_rate } = request.body
             const validatedData = await LocationValidator(request.body)
 
             if (validatedData.error)
@@ -84,16 +84,13 @@ class LocationController {
                     data: undefined
                 }
 
-            const { references = undefined } = request.qs
-
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return 'only admin can access the informationn'
             } else {
-
                 const locationUtil = new LocationUtil(Location)
-                const location = await locationUtil.create({ location_name, price_rate, category_id }, references)
-
-                await location.save()
+                await locationUtil.createLocation(request.body)
+                
+                return {status:200 , error:undefined , data:`successfully create`}
             }
         } catch{
             return 'only admin can acces the information'
