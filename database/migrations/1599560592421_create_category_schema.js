@@ -4,20 +4,16 @@
 const Schema = use('Schema')
 
 class CreateCategorySchema extends Schema {
-  up () {
+  up() {
     this.create('categories', (table) => {
-      table
-        .increments('category_id')
-      table
-        .string('type',20)
-      table
-        .smallint('free_hour',2)
-
+      table.increments('category_id')
+      table.string('type', 20)
+      table.smallint('free_hour', 2)
       table.timestamps()
     })
   }
 
-  down () {
+  down() {
     this.drop('categories')
   }
 }
