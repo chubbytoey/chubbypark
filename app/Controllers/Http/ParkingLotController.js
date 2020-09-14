@@ -49,8 +49,8 @@ class ParkingLotController {
             location_id,
             customer_id
         } = request.body
-        const validatedData = await ParkingLotValidator(request.body)
 
+       const validatedData = await ParkingLotValidator(request.body)
         if (validatedData.error)
             return{status: 422,error: validatedData.error,data: undefined}
         
