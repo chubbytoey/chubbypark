@@ -13,13 +13,13 @@ module.exports = async function parkinglotValidator(data) {
     } = data
 
     const rules = {
-        lot_name: 'required',
-        lot_status: 'required',
+        lot_name: 'required | string | max:5',
+        lot_status: 'required | max:12 | string',
         reserve_time: 'required',
         checkin: 'required',
-        customer_id: 'required',
-        location_id: 'required',
-        category_id: 'required'
+        customer_id: 'required | integer',
+        location_id: 'required | integer',
+        category_id: 'required | integer'
     }
 
     const validation = await Validator.validateAll({
@@ -33,7 +33,7 @@ module.exports = async function parkinglotValidator(data) {
     }, rules)
 
     return {
-        error: validation.messages()
+        error: validation.messages() || undefined
     }
 
 }
