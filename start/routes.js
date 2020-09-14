@@ -25,32 +25,37 @@ Route.group(() => {
   Route.resource('/locations','LocationController')
   Route.resource('/parkinglots','ParkinglotController')
   Route.resource('/categories','CategoryController')
-  Route.resource('/Accounts','AccountController')
-  Route.resource('/Customers','CustomerController')
-  Route.resource('/Admins','AdminController')
-  Route.post('/logins','AuthController.login').middleware('guest')
   Route.get('/getuser','AuthController.getUser')
-  Route.get('/logins','AuthController.logout').middleware('auth')
+  Route.get('/logins','AuthController.logout')
   Route.get('/checkLogin','TestController.checkLogin')
 
   // RESERVATION
   Route.get('/reserve','ReserveController.show')
   Route.get('/reserve/:location_id','ReserveController.showLot')
+  
+  Route.get('/test','ReserveController.test')
+
+  //only admin
+  Route.resource('/Admins','AdminController')
+  Route.get('/registers','RegisterController.index')
+  Route.get('/registers/:id','RegisterController.show')
+  Route.post('/addlot','AdminController.addlot')
+  Route.post('/addtype','AdminController.addType')
+
+  //user and guest
+
+  //only user
+  Route.resource('/Customers','CustomerController')
   Route.patch('/reserve/:location_id','ReserveController.reserve')
   Route.patch('/cancel','ReserveController.cancel')
   Route.patch('/checkin','ReserveController.checkin')
   Route.patch('/checkout','ReserveController.checkout')
 
-  Route.get('/test','ReserveController.test')
-  
-  
-  //ADMIN
-  Route.post('/addlot','AdminController.addlot')
-  Route.post('/addtype','AdminController.addType')
+  //admin and user
+  Route.resource('/Accounts','AccountController')
 
-  //register
-  Route.post('/registers','RegisterController.registerAccount')
-  Route.get('/registers','RegisterController.index')
-  Route.get('/registers/:id','RegisterController.show')
+  //only guest
+  Route.post('/registers','RegisterController.registerAccount').middleware('guest')
+  Route.post('/logins','AuthController.login').middleware('guest')
 
 }).prefix('api/v1')
