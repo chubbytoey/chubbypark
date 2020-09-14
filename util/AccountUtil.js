@@ -46,8 +46,8 @@ class AccountUtil {
         const accounts = await this._Account.findBy('account_id',accountID)
         return accounts
     }
-    async createAccount(username,password) {
-        const account = await Account.create({username,password})
+    async createAccount(username,password,status) {
+        const account = await this._Account.create(username,password,status)
         return account
     }
 
