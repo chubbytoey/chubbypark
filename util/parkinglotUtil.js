@@ -48,10 +48,11 @@ class ParkingLotUtil {
             return {message : 'delete success'}
         }
     }
-    async updateParkingLots(parkingID,lot_name,lot_status,checkin,category_id,location_id,customer_id) {
+    async updateParkingLots(parkingID,lot_name,lot_status,reserve_time,checkin,category_id,location_id,customer_id) {
         const parkingLotsUpdate = await this._ParkingLot.findBy('parkinglot_id',parkingID)
         parkingLotsUpdate.lot_name = lot_name
         parkingLotsUpdate.lot_status = lot_status
+        parkingLotsUpdate.reserve_time = reserve_time
         parkingLotsUpdate.checkin = checkin
         parkingLotsUpdate.category_id = category_id
         parkingLotsUpdate.location_id = location_id
