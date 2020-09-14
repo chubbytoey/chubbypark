@@ -27,16 +27,20 @@ class LocationUtil {
             .where("location_id",id)
             .fetch()
     }
-    async create (locationInstance, references){
-        const {location_id} = await this._Location.create(locationInstance)
-        const location = this._Location
-            .query()
-            .where('location_id',location_id)
-
-        return this._withReferences(location,references)
-        .fetch()
-        .then(response => response.first())
+    async createLocation (location_name, price_rate){
+        const locations = await this._Location.create(location_name,price_rate)
+        return locations
     }
+    // async create (locationInstance, references){
+    //     const {location_id} = await this._Location.create(locationInstance)
+    //     const location = this._Location
+    //         .query()
+    //         .where('location_id',location_id)
+
+    //     return this._withReferences(location,references)
+    //     .fetch()
+    //     .then(response => response.first())
+    // }
 
     async deleteLocation(locationID) {
         const location = await this._Location.findBy('location_id',locationID)
