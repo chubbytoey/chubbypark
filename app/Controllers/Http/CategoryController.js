@@ -68,19 +68,22 @@ class CategoryController {
         try {
             await auth.check()
             const user = await auth.getUser()
+
+            const { type, free_hour } = request.body
+            const validatedData = await CategoryValidator(request.body)
+            if (validatedData.error)
+                return { status: 422, error: validatedData.error, data: undefined }
+
+            const { references = undefined } = request.qs
+
             if (user.status == 'customer') {
                 return 'only admin can access the information'
             } else {
-                const { type, free_hour } = request.body
-                const validatedData = await CategoryValidator(request.body)
 
-                if (validatedData.error)
-                    return { status: 422, error: validatedData.error, data: undefined }
-
-                const { references = undefined } = request.qs
                 const categoryUtil = new CategoryUtil(Category)
                 const category = await categoryUtil.create({ type, free_hour }, references)
                 await category.save()
+                return { status: 200, error: undefined, data: category }
             }
         } catch {
             return 'only admin can access the information'
@@ -90,12 +93,14 @@ class CategoryController {
         try {
             await auth.check()
             const user = await auth.getUser()
+            const { id } = request.params
+            const { type } = request.body
+            const { free_hour } = request.body
+
             if (user.status == 'customer') {
                 return 'only admin can see the information'
             } else {
-                const { id } = request.params
-                const { type } = request.body
-                const { free_hour } = request.body
+
                 const categoryUtil = new CategoryUtil(Category)
                 const categories = await categoryUtil.updateCategory(id, type, free_hour)
 

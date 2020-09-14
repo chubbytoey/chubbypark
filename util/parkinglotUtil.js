@@ -5,16 +5,16 @@ class ParkinglotUtil {
     constructor(ParkinglotModel){
         this._ParkingLot = ParkinglotModel
     }
-    // _withReferences(model,references) {
-    //     if (references){
-    //         const extractedReferences = references.split(",")
-    //         extractedReferences.forEach((ref) => {
-    //             model.with(ref);
-    //         });
+    _withReferences(model,references) {
+        if (references){
+            const extractedReferences = references.split(",")
+            extractedReferences.forEach((ref) => {
+                model.with(ref);
+            });
             
-    //     }
-    //     return model;
-    // }
+        }
+        return model;
+    }
 
     getAll(references) {
         const parkinglots = this._ParkingLot.query()
@@ -55,6 +55,7 @@ class ParkinglotUtil {
        
         return 'success'
     }
+
     async deleteParkingLots(parkingID) {
 
         const parkingLots = await this._ParkingLot.findBy('parkinglot_id',parkingID)
@@ -81,7 +82,13 @@ class ParkinglotUtil {
         return parkingLots
     }
 
-
+    _withReference(instance, references) {
+        if (references) {
+            const extractedReferences = references.split(",")
+            instance.with(extractedReferences)
+        }
+        return instance
+    }
 
 }
 module.exports = ParkinglotUtil

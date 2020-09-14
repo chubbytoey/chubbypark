@@ -42,8 +42,6 @@ Route.group(() => {
   Route.post('/addlot','AdminController.addlot')
   Route.post('/addtype','AdminController.addType')
 
-  //user and guest
-
   //only user
   Route.resource('/Customers','CustomerController')
   Route.patch('/reserve/:location_id','ReserveController.reserve')

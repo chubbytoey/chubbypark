@@ -4,25 +4,25 @@
 const Schema = use('Schema')
 
 class CreateLocationSchema extends Schema {
-  up () {
+  up() {
     this.create('locations', (table) => {
       table
         .increments('location_id')
       table
-        .string('location_name',100)
+        .string('location_name', 100)
         .notNullable()
         .unique()
       table
         .float('price_rate')
-      
+
       table.timestamps()
 
-     
+
 
     })
   }
 
-  down () {
+  down() {
     this.drop('locations')
   }
 }
