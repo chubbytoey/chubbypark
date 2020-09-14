@@ -19,10 +19,12 @@ class ParkinglotUtil {
     getAll(references) {
         const parkinglots = this._ParkingLot.query()
 
-        console.log(parkinglots)
+       
         if(references) {
             const extractedReferences = references.split(",")
-            parkinglots.with(extractedReferences)
+            extractedReferences.forEach((ref) => {
+            parkinglots.with(ref);
+            });    
         }
         return parkinglots.fetch()    
     }
@@ -41,19 +43,17 @@ class ParkinglotUtil {
 
         if(references) {
             const extractedReferences = references.split(",")
-            parkinglots.with(extractedReferences)
+            extractedReferences.forEach((ref) => {
+            parkinglots.with(ref);
+            });   
+            
         }
         return parkinglots.fetch()    
     }  
-    async create (parkinglotInstance, references){
+    async create (parkinglotInstance){
         const {parkinglotId} = await this._ParkingLot.create(parkinglotInstance)
-        const parkinglot = this._ParkingLot
-            .query()
-            .where('parkinglot_id',parkinglotId)
-
-        return this._withReferences(parkinglot,references)
-        .fetch()
-        .then(response => response.first())
+       
+        return 'success'
     }
     async deleteParkingLots(parkingID) {
 
