@@ -57,5 +57,9 @@ class CustomerUtil {
         const customers = await this._Customer.findBy('customer_id',customerID)
         return customers
     }
+    async createCustomer(first_name,last_name,age,gender) {
+        const customer = await this._Customer.create({ first_name, last_name, age, gender, user_rate: 0, previllage: 'normal', reservation: 0, cancle: 0 })
+        return customer
+    }
 }
 module.exports = CustomerUtil
