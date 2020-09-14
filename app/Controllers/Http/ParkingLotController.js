@@ -65,39 +65,29 @@ class ParkingLotController {
         try {
             await auth.check()
             const user = await auth.getUser()
+            const validatedData = await ParkingLotValidator(request.body)
+
+            const {references} = request.qs
+            if (validatedData.error)
+                return { status: 422, error: validatedData.error, data: undefined }
+
+            // const {
+            //     lot_name,
+            //     lot_status,
+            //     reserve_time,
+            //     checkin,
+            //     category_id,
+            //     location_id,
+            //     customer_id
+            // } = request.body
+
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return 'only admin can access the informationn'
             } else {
-                const {
-                    lot_name,
-                    lot_status,
-                    reserve_time,
-                    checkin,
-                    category_id,
-                    location_id,
-                    customer_id
-                } = request.body
-
-                const validatedData = await ParkingLotValidator(request.body)
-                if (validatedData.error)
-                    return { status: 422, error: validatedData.error, data: undefined }
-
-                const { references = undefined } = request.qs
                 const parkingUtil = new ParkingLotUtil(ParkingLot)
-                const parkinglot = await parkingUtil
-                    .create({
-                        lot_name,
-                        lot_status,
-                        reserve_time,
-                        checkin,
-                        category_id,
-                        location_id,
-                        customer_id
-                    },
-                        references
-                    )
+                const parkingLots = await parkingUtil.createParkingLots(request.body,references)
 
-                await parkinglot.save()
+                return {status:200 , error:undefined , data:parkingLots}
             }
         } catch{
             return 'only admin can acces the information'
