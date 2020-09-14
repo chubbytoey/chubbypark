@@ -4,15 +4,15 @@
 const Schema = use('Schema')
 
 class CreateParkinglotSchema extends Schema {
-  up () {
+  up() {
     this.create('parkinglots', (table) => {
       table
         .increments('parkinglot_id')
       table
-        .string('lot_name',5)
+        .string('lot_name', 5)
         .notNullable()
       table
-        .string('lot_status',12)
+        .string('lot_status', 12)
         .notNullable()
         .default("available")
       table
@@ -53,7 +53,7 @@ class CreateParkinglotSchema extends Schema {
     })
   }
 
-  down () {
+  down() {
     this.drop('parkinglots')
   }
 }

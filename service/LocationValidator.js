@@ -1,24 +1,19 @@
 const Validator = use("Validator")
-module.exports = async function locationValidator (data) {
+module.exports = async function locationValidator(data) {
     if (typeof data !== 'object') throw new Error()
 
-    const {location_name,price_rate,category_id} = data
-
-
+    const { location_name, price_rate, category_id } = data
 
     const rules = {
-        location_name:'required | unique:Locations,location_name',
-        price_rate:'required',
-        category_id:'required'
+        location_name: 'required | string | max:100 |unique:Locations,location_name',
+        price_rate: 'required | number',
+        category_id: 'required | integer'
     }
 
+    const validation = await Validator.validateAll({ location_name, price_rate, category_id }, rules)
 
-const validation =await Validator.validateAll ({
-    location_name,price_rate,category_id
-},rules)
-
-return{
-    error: validation.messages()
+    return {
+        error: validation.messages() || undefined
     }
-    
+
 }
