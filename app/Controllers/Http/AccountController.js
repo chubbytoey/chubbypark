@@ -91,7 +91,6 @@ class AccountController {
 
                 const accountUtil = new AccountUtil(Account)
                 await accountUtil.createAccount(request.body)
-                // await Account.create({username,password})
                 return { status: 200, error: undefined, data: `${username} is created succesfully` }
             } else {
                 return 'only admin can create the information'
