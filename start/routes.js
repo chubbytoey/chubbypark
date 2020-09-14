@@ -40,10 +40,13 @@ Route.group(() => {
   Route.patch('/cancel','ReserveController.cancel')
   Route.patch('/checkin','ReserveController.checkin')
   Route.patch('/checkout','ReserveController.checkout')
+
+  Route.get('/test','ReserveController.test')
   
   
   //ADMIN
   Route.post('/addlot','AdminController.addlot')
+  Route.post('/addtype','AdminController.addType')
 
   //register
   Route.post('registers','RegisterController.registerAccount')
