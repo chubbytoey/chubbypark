@@ -15,18 +15,18 @@ test('should return undefined error when input correct data', async ({ assert })
 
 test('should return error if input incorrect data', async ({ assert }) => {
   const validatedData = await customerValidator({
-    first_name : "chubby",
+    first_name: "chubby",
     last_name: "12345678",
-    age : "wow",
-    gender: "male"
+    age: "wow",
+    gender: ""
   })
   assert.isArray(validatedData.error)
 })
 test('should return only one error if input only one incorrect data', async ({ assert }) => {
   const validatedData = await customerValidator({
     first_name: "ramita",
-    last_name : "saro",
-    age: "3",
+    last_name: "saro",
+    age: "33333",
     gender: "male"
   })
   assert.equal(validatedData.error.length, 1)
