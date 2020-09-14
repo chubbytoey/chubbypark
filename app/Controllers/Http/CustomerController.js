@@ -60,18 +60,19 @@ class CustomerController {
         try {
             await auth.check()
             const user = await auth.getUser()
+            const { first_name, last_name, age, gender } = request.body
+            const ValidatedData = await CustomerValidator(request.body)
+
+            if (ValidatedData.error) {
+                return { status: 422, error: ValidatedData.error, data: undefined }
+            }
             if (user.status == 'customer') {
                 return 'only admin can access the information'
             } else {
-                const { first_name, last_name, age, gender } = request.body
-                const ValidatedData = await CustomerValidator(request.body)
-                console.log('hoo')
 
-                if (ValidatedData.error) {
-                    return { status: 422, error: ValidatedData.error, data: undefined }
-                }
+                const customerUtil = new CustomerUtil(Customer)
+                await customerUtil.createCustomer(first_name,last_name,age,gender)
 
-                await Customer.create({ first_name, last_name, age, gender, user_rate: 0, previllage: 'normal', reservation: 0, cancle: 0 })
 
                 return { status: 200, error: undefined, data: `created succesfully` }
             }
