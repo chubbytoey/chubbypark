@@ -50,7 +50,7 @@ class CategoryUtil {
     async updateCategory(categoryID,type,free_hour) {
         const categoryUpdate = await this._Category.findBy('category_id',categoryID)
         categoryUpdate.type = type
-        categoryUpdate.free_hour = freee_hour
+        categoryUpdate.free_hour = free_hour
         await categoryUpdate.save()
 
         const category = await this._Category.findBy('category_id',categoryID)
