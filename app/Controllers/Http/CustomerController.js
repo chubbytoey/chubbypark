@@ -1,6 +1,6 @@
 'use strict'
 
-const CustomerValidator = require("../../../service/CustomerValidator.js")
+const CustomerValidator = require("../../../service/customerValidator.js")
 const Customer = use('App/Models/Customer')
 const CustomerUtil = require('../../../util/CustomerUtil')
 
@@ -86,7 +86,7 @@ class CustomerController {
             const user = await auth.getUser()
             const { body, params } = request
             const { id } = params
-            const { account_id, first_name, last_name, age, gender, user_rate, previllage, reservation, cancle, coin } = body
+            const { account_id, first_name, last_name, age, gender, user_rate, previllage, reservation, cancel, coin } = body
 
             const ValidatedValue = numberTypeParamValidator(id)
             if (ValidatedValue.error)
@@ -95,7 +95,7 @@ class CustomerController {
             if (user.status == 'admin' || user.status == 'customer' && user.account_id == id) {
 
                 const customerUtil = new CustomerUtil(Customer)
-                const customers = await customerUtil.updateCustomer(id, account_id, first_name, last_name, age, gender, user_rate, previllage, reservation, cancle, coin)
+                const customers = await customerUtil.updateCustomer(id, account_id, first_name, last_name, age, gender, user_rate, previllage, reservation, cancel, coin)
 
                 return { status: 200, error: undefined, data: customers }
             } else {
