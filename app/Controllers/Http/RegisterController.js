@@ -1,6 +1,6 @@
 'use strict'
 const Account = use('App/Models/Account')
-const AccountValidator = require('../../../service/AccountValidator.js')
+const AccountValidator = require('../../../service/accountValidator.js')
 const RegistertUtil = require('../../../util/RegisterUtil')
 
 function numberTypeParamValidator(number) {
