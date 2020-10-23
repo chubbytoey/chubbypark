@@ -7,7 +7,7 @@ class RegisterUtil {
         const {username,password,first_name,last_name,age,gender} = request
         const account = await this._Account.create({username,password})
         await account.customer()
-            .create({first_name,last_name,age,gender,user_rate:'0',previllage:'normal',reservation:'0',cancel:'0',coin:'0'})
+            .create({first_name,last_name,age,gender,user_rate:'0',previllage:'normal',reservation:'0',cancle:'0',coin:'0'})
 
         return {message:'ok'}
     }
@@ -18,7 +18,7 @@ class RegisterUtil {
             const extractedReferences = references.split(",")
             accounts.with(extractedReferences)
         }
-        return accounts.fetch()    
+        return accounts.fetch()
     }
     getByID(accountID , references) {
         const accounts = this._Account
@@ -29,7 +29,7 @@ class RegisterUtil {
             const extractedReferences = references.split(",")
             accounts.with(extractedReferences)
         }
-        return accounts.fetch()    
-    }  
+        return accounts.fetch()
+    }
 }
 module.exports = RegisterUtil
