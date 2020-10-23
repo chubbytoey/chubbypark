@@ -33,27 +33,27 @@ class CustomerController {
     }
 
     async show({ request, auth }) {
-        try {
-            await auth.check()
-            const user = await auth.getUser()
+        // try {
+        //     await auth.check()
+        //     const user = await auth.getUser()
             const { id } = request.params
             const ValidatedValue = numberTypeParamValidator(id)
             if (ValidatedValue.error) {
                 return { status: 500, error: ValidatedValue.error, data: undefined }
             }
 
-            if (user.status == 'admin' || user.status == 'customer' && user.account_id == id) {
+            // if (user.status == 'admin' || user.status == 'customer' && user.account_id == id) {
                 const { references } = request.qs
                 const customerUtil = new CustomerUtil(Customer)
                 const customers = await customerUtil.getByID(id, references)
 
                 return { status: 200, error: undefined, data: customers || {} }
-            } else {
-                return 'only admin can access the information'
-            }
-        } catch{
-            return 'only admin can access the information'
-        }
+        //     } else {
+        //         return 'only admin can access the information'
+        //     }
+        // } catch{
+        //     return 'only admin can access the information'
+        // }
     }
 
     async store({ request, auth }) {
