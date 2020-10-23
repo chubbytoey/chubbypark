@@ -16,7 +16,7 @@ class CustomerUtil {
     getByID(customerID, references) {
         const customers = this._Customer
             .query()
-            .where('customer_id', customerID)
+            .where('account_id', customerID)
 
         if (references) {
             const extractedReferences = references.split(",")
