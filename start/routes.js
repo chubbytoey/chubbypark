@@ -32,7 +32,7 @@ Route.group(() => {
   // RESERVATION
   Route.get('/reserve','ReserveController.show')
   Route.get('/reserve/:location_id','ReserveController.showLot')
-  
+
   Route.get('/test','ReserveController.test')
 
   //only admin
@@ -44,6 +44,7 @@ Route.group(() => {
 
   //only user
   Route.resource('/Customers','CustomerController')
+  Route.resource('/Customers/user','CustomerController.show')
   Route.patch('/reserve/:location_id','ReserveController.reserve')
   Route.patch('/cancel','ReserveController.cancel')
   Route.patch('/checkin','ReserveController.checkin')
@@ -51,6 +52,7 @@ Route.group(() => {
 
   //admin and user
   Route.resource('/Accounts','AccountController')
+  Route.post('/coins/:id','CoinController.updateCoin')
 
   //only guest
   Route.post('/registers','RegisterController.registerAccount').middleware('guest')
