@@ -3,7 +3,7 @@ module.exports = async function accountValidator(data) {
     if (typeof data !== 'object')
         throw new Error()
 
-    const { first_name, last_name, age, gender } = data
+    const { first_name, last_name, birth_date, gender } = data
 
     const rules = {
         first_name: 'required | string | max:120',
@@ -12,7 +12,7 @@ module.exports = async function accountValidator(data) {
         gender: 'required | string'
     }
 
-    const validation = await Validator.validateAll({ first_name, last_name, birth_date, gender, cancellation: 0, previllage: 'normal', reservation: 0, cancel: 0 }, rules)
+    const validation = await Validator.validateAll({ first_name, last_name, birth_date, gender, cancellation: 4, previllage: 'normal', reservation: 0, cancel: 0 }, rules)
 
     return {
         error: validation.messages() || undefined

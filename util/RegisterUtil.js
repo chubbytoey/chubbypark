@@ -7,7 +7,7 @@ class RegisterUtil {
         const {username,password,first_name,last_name,birth_date,gender} = request
         const account = await this._Account.create({username,password})
         await account.customer()
-            .create({first_name,last_name,birth_date,gender,cancellation:'0',previllage:'normal',reservation:'0',cancel:'0',coin:'0'})
+            .create({first_name,last_name,birth_date,gender,cancellation:'4',previllage:'normal',reservation:'0',cancel:'0',coin:'0'})
 
         return {message:'ok'}
     }
