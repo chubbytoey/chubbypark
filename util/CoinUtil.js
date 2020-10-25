@@ -4,11 +4,12 @@ class CoinUtil{
   }
   async updateCoin(accountID , amount) {
     const coins = await this._Customer.findBy('account_id',accountID)
-      coinUpdate.cancellation = coinUpdate.cancellation + amount
-      await coinUpdate.save()
+      coins.coin = coins.coin + amount
+      await coins.save()
 
     const coinUpdate = await this._Customer.findBy('account_id',accountID)
 
     return coinUpdate
   }
 }
+module.exports = CoinUtil
