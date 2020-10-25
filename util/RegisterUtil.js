@@ -4,10 +4,10 @@ class RegisterUtil {
     }
 
     async createAccount(request) {
-        const {username,password,first_name,last_name,age,gender} = request
+        const {username,password,first_name,last_name,birth_date,gender} = request
         const account = await this._Account.create({username,password})
         await account.customer()
-            .create({first_name,last_name,age,gender,user_rate:'0',previllage:'normal',reservation:'0',cancle:'0',coin:'0'})
+            .create({first_name,last_name,birth_date,gender,cancellation:'0',previllage:'normal',reservation:'0',cancel:'0',coin:'0'})
 
         return {message:'ok'}
     }
