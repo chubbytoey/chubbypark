@@ -21,7 +21,7 @@ class ParkingLotController {
             const { references = undefined } = request.qs
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const parkingUtil = new ParkingLotUtil(ParkingLot)
                 const parkinglots = await parkingUtil.getAll(references)
@@ -33,7 +33,7 @@ class ParkingLotController {
                 }
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async show({ request, auth }) {
@@ -49,7 +49,7 @@ class ParkingLotController {
             const { references = undefined } = request.qs
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const parkingUtil = new ParkingLotUtil(ParkingLot)
@@ -58,7 +58,7 @@ class ParkingLotController {
                 return { status: 200, error: undefined, data: parkinglot || {} }
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async store({ request ,auth}) {
@@ -82,7 +82,7 @@ class ParkingLotController {
             // } = request.body
 
             if (user.status == 'customer') {
-                return 'only admin can access the informationn'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const parkingUtil = new ParkingLotUtil(ParkingLot)
                 const parkingLots = await parkingUtil.createParkingLots(request.body,references)
@@ -90,7 +90,7 @@ class ParkingLotController {
                 return {status:200 , error:undefined , data:parkingLots}
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async update({ request, auth }) {
@@ -100,7 +100,7 @@ class ParkingLotController {
             const { body, params } = request
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const parkingLotsUtil = new ParkingLotUtil(ParkingLot)
@@ -108,7 +108,7 @@ class ParkingLotController {
                 return { status: 200, error: undefined, data: parkingLots }
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async destroy({ request, auth }) {
@@ -118,7 +118,7 @@ class ParkingLotController {
             const { id } = request.params
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const parkingLotsUtil = new ParkingLotUtil(ParkingLot)
@@ -127,7 +127,7 @@ class ParkingLotController {
 
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 }

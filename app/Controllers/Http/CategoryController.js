@@ -19,7 +19,7 @@ class CategoryController {
             await auth.check()
             const user = await auth.getUser()
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const { references = undefined } = request.qs
                 const categoryUtil = new CategoryUtil(Category)
@@ -32,7 +32,7 @@ class CategoryController {
                 }
             }
         } catch {
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 
@@ -41,7 +41,7 @@ class CategoryController {
             await auth.check()
             const user = await auth.getUser()
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const { id } = request.params
 
@@ -61,7 +61,7 @@ class CategoryController {
             }
         }
         catch{
-            return 'only admin ca acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async store({ request, auth }) {
@@ -77,7 +77,7 @@ class CategoryController {
             const { references = undefined } = request.qs
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const categoryUtil = new CategoryUtil(Category)
@@ -86,7 +86,7 @@ class CategoryController {
                 return { status: 200, error: undefined, data: category }
             }
         } catch {
-            return 'only admin can access the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async update({ request, auth }) {
@@ -98,7 +98,7 @@ class CategoryController {
             const { free_hour } = request.body
 
             if (user.status == 'customer') {
-                return 'only admin can see the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const categoryUtil = new CategoryUtil(Category)
@@ -107,7 +107,7 @@ class CategoryController {
                 return { status: 200, error: undefined, data: categories }
             }
         } catch{
-            return 'only admin can access the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async destroy({ request, auth }) {
@@ -115,7 +115,7 @@ class CategoryController {
             await auth.check()
             const user = await auth.getUser()
             if (user.status == 'customer') {
-                return 'only admin can see the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const { id } = request.params
                 const categoryUtil = new CategoryUtil(Category)
@@ -124,7 +124,7 @@ class CategoryController {
                 return { status: 200, error: undefined, data: categories.message }
             }
         } catch {
-            return 'only admin can access the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 }

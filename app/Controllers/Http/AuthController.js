@@ -13,11 +13,11 @@ class AuthController {
                 const accessToken = await auth.generate(user)
                 return {status:'Login success' , access:accessToken , username : user.username}
             } else {
-                return 'wrong password or username'
+                return {status:500 , error:'wrong password or username' , data:undefined}
             }
         }
         catch{
-            return 'Not login'
+            return {status:500 , error:'sth happaned' , data:undefined}
         }
     }
 }

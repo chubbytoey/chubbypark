@@ -31,7 +31,7 @@ class RegisterController {
             const { references = undefined } = request.qs
 
             if (user.status == 'customer') {
-                return 'only admin can see the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const accountUtil = new RegistertUtil(Account)
@@ -41,7 +41,7 @@ class RegisterController {
             }
         }
         catch {
-            return 'here'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async show({ request, auth }) {
@@ -55,7 +55,7 @@ class RegisterController {
                 return { status: 500, error: ValidatedValue.error, data: undefined }
             }
             if (user.status == 'customer') {
-                return 'only admin can see the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const { references } = request.qs
@@ -66,7 +66,7 @@ class RegisterController {
             }
         }
         catch {
-            return 'here'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 }

@@ -19,7 +19,7 @@ class AccountController {
 
             const { references = undefined } = request.qs
             if (user.status == 'customer') {
-                return 'only admin can see the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const accountUtil = new AccountUtil(Account)
@@ -30,7 +30,7 @@ class AccountController {
             }
         }
         catch {
-            return 'please login as admin'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async show({ request, auth }) {
@@ -55,7 +55,7 @@ class AccountController {
                     return { status: 200, error: undefined, data: accounts || {} }
 
                 } else {
-                    return 'you can see only your own account information'
+                    return {status:500 , error:'only admin can access' , data:undefined}
                 }
 
             } else {
@@ -73,7 +73,7 @@ class AccountController {
             }
         }
         catch {
-            return 'please login'
+            return {status:500 , error:'please login' , data:undefined}
         }
     }
     async store({ request, auth }) {
@@ -93,11 +93,11 @@ class AccountController {
                 await accountUtil.createAccount(request.body)
                 return { status: 200, error: undefined, data: `${username} is created succesfully` }
             } else {
-                return 'only admin can create the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             }
         }
         catch {
-            return 'only admin can create the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
     async update({ request, auth }) {
@@ -121,10 +121,10 @@ class AccountController {
                 return { status: 200, error: undefined, data: accounts }
 
             } else {
-                return 'only admin or own account can edit the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             }
         } catch {
-            return 'only admin or own account can edit the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
 
     }
@@ -144,10 +144,10 @@ class AccountController {
 
                 return { status: 200, error: undefined, data: { message: accounts.message } }
             } else {
-                return 'only admin or own account can delete the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             }
         } catch {
-            return 'only admin or own account can delete the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 }

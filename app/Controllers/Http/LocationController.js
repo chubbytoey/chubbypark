@@ -21,7 +21,7 @@ class LocationController {
             const { references = undefined } = request.qs
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const locationUtil = new LocationUtil(Location)
                 const locations = await locationUtil.getAll(references)
@@ -33,7 +33,7 @@ class LocationController {
                 }
             }
         } catch {
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 
@@ -52,7 +52,7 @@ class LocationController {
                 }
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const { references = undefined } = request.qs
@@ -66,7 +66,7 @@ class LocationController {
                 }
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 
@@ -85,15 +85,15 @@ class LocationController {
                 }
 
             if (user.status == 'customer') {
-                return 'only admin can access the informationn'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const locationUtil = new LocationUtil(Location)
                 await locationUtil.createLocation(request.body)
-                
+
                 return {status:200 , error:undefined , data:`successfully create`}
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 
@@ -106,14 +106,14 @@ class LocationController {
             const { location_name, price_rate } = body
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const locationUtil = new LocationUtil(Location)
                 const locations = await locationUtil.updateLocation(id, location_name, price_rate)
                 return { status: 200, error: undefined, data: locations }
             }
         } catch{
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
 
     }
@@ -125,14 +125,14 @@ class LocationController {
             const { id } = request.params
 
             if (user.status == 'customer') {
-                return 'only admin can access the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             } else {
                 const locationUtil = new LocationUtil(Location)
                 const locations = await locationUtil.deleteLocation(id)
                 return { status: 200, error: undefined, data: locations.message }
             }
         } catch {
-            return 'only admin can acces the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 

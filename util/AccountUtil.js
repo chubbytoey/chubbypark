@@ -10,7 +10,7 @@ class AccountUtil {
             const extractedReferences = references.split(",")
             accounts.with(extractedReferences)
         }
-        return accounts.fetch()    
+        return accounts.fetch()
     }
     getByID(accountID , references) {
         const accounts = this._Account
@@ -21,14 +21,9 @@ class AccountUtil {
             const extractedReferences = references.split(",")
             accounts.with(extractedReferences)
         }
-        return accounts.fetch()    
-    }  
+        return accounts.fetch()
+    }
     async deleteAccount(accountID) {
-        // await this._Account.table('accounts').where('account_id',accountID).delete()
-
-        // await this._Account.findBy('account_id',accountID).delete()
-        // return {message:'yes'}
-
         const accounts = await this._Account.findBy('account_id',accountID)
         if(!accounts) {
             return {message : 'cant find data'}

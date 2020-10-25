@@ -42,12 +42,12 @@ class AdminController {
                         await parkinglot.save()
                     }
                 }
-                return 'success'
+                return {status:200 , error:undefined , data:parkinglot}
             } else {
-                return 'only admin can add the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             }
         } catch {
-            return 'only admin can add the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
 
     }
@@ -80,10 +80,10 @@ class AdminController {
                     }
                 }
             } else {
-                return 'only admin can add the information'
+                return {status:500 , error:'only admin can access' , data:undefined}
             }
         } catch {
-            return 'only admin can add the information'
+            return {status:500 , error:'only admin can access' , data:undefined}
         }
     }
 }
