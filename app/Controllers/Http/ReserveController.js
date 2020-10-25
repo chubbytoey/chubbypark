@@ -35,11 +35,13 @@ function reserveTimer(userData, lotReserve) {
   return job;
 }
 
-async function checkToken({ auth }) {
+async function checkToken( auth ) {
   try {
     await auth.check();
+
     return true;
   } catch (error) {
+
     return { error: "error" };
   }
 }
@@ -154,8 +156,9 @@ class ReserveController {
   async reserve({ request, auth }) {
     const checkLogin = await checkToken(auth);
 
+
     if (checkLogin.error) {
-      return "please login";
+      return {status:500 , error:'please login first' , data:undefined}
     } else {
       const { body, params } = request;
       const { lot_name } = body;
