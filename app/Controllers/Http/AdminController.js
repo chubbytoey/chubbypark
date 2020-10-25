@@ -47,7 +47,7 @@ class AdminController {
                 return {status:500 , error:'only admin can access' , data:undefined}
             }
         } catch {
-            return {status:500 , error:'only admin can access' , data:undefined}
+            return {status:500 , error:'sth wrong' , data:undefined}
         }
 
     }
