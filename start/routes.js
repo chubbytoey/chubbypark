@@ -52,7 +52,7 @@ Route.group(() => {
 
   //admin and user
   Route.resource('/Accounts','AccountController')
-  Route.post('/coins/:id','CoinController.updateCoin')
+  Route.post('/coins','CoinController.updateCoin')
 
   //only guest
   Route.post('/registers','RegisterController.registerAccount').middleware('guest')
