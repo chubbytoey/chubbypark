@@ -41,10 +41,12 @@ Route.group(() => {
   Route.get('/registers/:id','RegisterController.show')
   Route.post('/addlot','AdminController.addlot')
   Route.post('/addtype','AdminController.addType')
+  Route.get('/Customers/user','CustomerController.show')
+
 
   //only user
   Route.resource('/Customers','CustomerController')
-  Route.resource('/Customers/user','CustomerController.show')
+  Route.post('/profiles/user','ProfileController.update')
   Route.patch('/reserve/:location_id','ReserveController.reserve')
   Route.patch('/cancel','ReserveController.cancel')
   Route.patch('/checkin','ReserveController.checkin')
@@ -53,6 +55,10 @@ Route.group(() => {
   //admin and user
   Route.resource('/Accounts','AccountController')
   Route.post('/coins','CoinController.updateCoin')
+  Route.post('/assets','AssetController.upload')
+  Route.get("/assets/:fileName","AssetController.show")
+  Route.post('/account/picture','ProfileController.updatePic')
+  Route.get('/account/data','ProfileController.show')
 
   //only guest
   Route.post('/registers','RegisterController.registerAccount').middleware('guest')
