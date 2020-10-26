@@ -9,6 +9,7 @@ class AccountSchema extends Schema {
       table.increments('account_id')
       table.string('username', 20 ).notNullable().unique()
       table.string('password').notNullable()
+      table.string('url',100).unique()
       table.string('status', 10 ).default('customer')
       table.timestamps()
     })
