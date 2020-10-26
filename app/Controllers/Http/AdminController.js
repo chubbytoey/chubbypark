@@ -42,11 +42,12 @@ class AdminController {
                         await parkinglot.save()
                     }
                 }
-                return {status:200 , error:undefined , data:parkinglot}
+                return {status:200 , error:undefined , data:'success'}
             } else {
                 return {status:500 , error:'only admin cans access' , data:undefined}
             }
-        } catch {
+        } catch(err) {
+          console.log(err)
             return {status:500 , error:'sth wrong' , data:undefined}
         }
 
