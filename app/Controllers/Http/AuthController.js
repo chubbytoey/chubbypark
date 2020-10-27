@@ -10,7 +10,7 @@ class AuthController {
         try{
             const hashPassword = await Hash.verify(password,user.password)
             if(hashPassword && user.password !== null){
-                const accessToken = await auth.generate(user,false,{ expiresIn: '60m' })
+                const accessToken = await auth.generate(user,false,{ expiresIn: '30m' })
                 return {status:'Login success' , access:accessToken , username : user.username}
             } else {
                 return {status:500 , error:'wrong password or username' , data:undefined}
