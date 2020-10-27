@@ -41,19 +41,21 @@ class ParkingLotController {
             await auth.check()
             const user = await auth.getUser()
             const { id } = request.params
-
             const validatedValue = numberTypeParamValidator(id)
+
             if (validatedValue.error)
                 return { status: 500, error: validatedValue.error, data: undefined }
 
             const { references = undefined } = request.qs
 
             if (user.status == 'customer') {
+
                 return {status:500 , error:'only admin can access' , data:undefined}
             } else {
 
                 const parkingUtil = new ParkingLotUtil(ParkingLot)
-                const parkinglot = await parkingUtil.getById(id, references)
+
+                const parkinglot = await parkingUtil.getByID(id, references)
 
                 return { status: 200, error: undefined, data: parkinglot || {} }
             }
