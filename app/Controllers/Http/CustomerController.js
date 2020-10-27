@@ -36,7 +36,11 @@ class CustomerController {
         try {
             await auth.check()
             const user = await auth.getUser()
-            // const { id } = request.params]
+
+            //for crud route
+            // const { id } = request.params
+
+            //for /customers/user route
             const id = user.account_id
             const ValidatedValue = numberTypeParamValidator(id)
             if (ValidatedValue.error) {
@@ -86,7 +90,11 @@ class CustomerController {
             await auth.check()
             const user = await auth.getUser()
             const { body, params } = request
+            // for crud
             const { id } = params
+
+            //for customers/user route
+            // const {id} = user.account_id
             const { account_id, first_name, last_name, birth_date, gender, cancellation, previllage, reservation, cancel, coin } = body
 
             const ValidatedValue = numberTypeParamValidator(id)
