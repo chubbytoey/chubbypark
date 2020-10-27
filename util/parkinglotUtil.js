@@ -11,7 +11,7 @@ class ParkinglotUtil {
             extractedReferences.forEach((ref) => {
                 model.with(ref);
             });
-            
+
         }
         return model;
     }
@@ -19,14 +19,14 @@ class ParkinglotUtil {
     getAll(references) {
         const parkinglots = this._ParkingLot.query()
 
-       
+
         if(references) {
             const extractedReferences = references.split(",")
             extractedReferences.forEach((ref) => {
             parkinglots.with(ref);
-            });    
+            });
         }
-        return parkinglots.fetch()    
+        return parkinglots.fetch()
     }
 
     // async getById(id, references){
@@ -37,6 +37,7 @@ class ParkinglotUtil {
     //         .fetch()
     // }
     getByID(parkinglotID , references) {
+      console.log(parkinglotID)
         const parkinglots = this._ParkingLot
         .query()
         .where('parkinglot_id',parkinglotID)
@@ -45,14 +46,15 @@ class ParkinglotUtil {
             const extractedReferences = references.split(",")
             extractedReferences.forEach((ref) => {
             parkinglots.with(ref);
-            });   
-            
+            });
+
         }
-        return parkinglots.fetch()    
-    }  
+        return parkinglots.fetch()
+    }
+
     async create (parkinglotInstance){
         const {parkinglotId} = await this._ParkingLot.create(parkinglotInstance)
-       
+
         return 'success'
     }
 
