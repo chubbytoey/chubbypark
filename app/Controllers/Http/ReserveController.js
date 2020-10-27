@@ -4,6 +4,8 @@ const Location = use("App/Models/Location");
 const ParkingLot = use("App/Models/Parkinglot");
 const Customer = use("App/Models/Customer");
 const Category = use("App/Models/Category");
+const ReservationUtil = require("../../../util/reservationUtil");
+
 const CronJob = require("cron").CronJob;
 let timer;
 
@@ -35,13 +37,12 @@ function reserveTimer(userData, lotReserve) {
   return job;
 }
 
-async function checkToken( auth ) {
+async function checkToken(auth) {
   try {
     await auth.check();
 
     return true;
   } catch (error) {
-
     return { error: "error" };
   }
 }
@@ -64,7 +65,7 @@ function timeFormat(timeMilisecond) {
   seconds = seconds % 60;
   let hours = Math.floor(minutes / 60);
   minutes = minutes % 60;
-  const time = hours + ":" + minutes + ":" + seconds;
+  const time = hours + " hours " + minutes + " minutes " + seconds + " seconds";
 
   return time;
 }
@@ -79,28 +80,24 @@ class ReserveController {
       data: locations,
     };
   }
+
   async showLot({ request, auth }) {
     const checkLogin = await checkToken(auth);
     let lots;
     const { location_id } = request.params;
+    const { references = undefined } = request.qs;
+
+    const reservationUtil = new ReservationUtil(ParkingLot);
 
     if (checkLogin.error) {
+      const lots = await reservationUtil.getByID(location_id, references);
+
       return {
         status: 200,
         error: undefined,
-        data: await ParkingLot.query()
-          .select("*")
-          .where({ location_id: location_id })
-          .fetch(),
+        data: lots || {},
       };
     } else {
-      const { references = undefined } = request.qs;
-
-      if (references) {
-        const extractedReferences = references.split(",");
-        lots.with(extractedReferences);
-      }
-
       const token = await auth.getUser();
       const userData = await Customer.findBy("account_id", token.account_id);
 
@@ -109,9 +106,7 @@ class ReserveController {
           .select("*")
           .where({
             location_id: location_id,
-            category_id: 1,
-            category_id: 2,
-            category_id: 4,
+            category_id: 1 || 2 || 4,
           })
           .fetch();
       } else if (
@@ -121,44 +116,46 @@ class ReserveController {
         lots = await ParkingLot.query()
           .where({
             location_id: location_id,
-            category_id: 1,
-            category_id: 2,
-            category_id: 3,
+            category_id: 1 || 2 || 3,
           })
           .fetch();
       } else if (
         userData.gender == "female" &&
         userData.previllage == "normal"
       ) {
-        lots = await ParkingLot.query()
-          .where({ location_id: location_id, category_id: 1, category_id: 2 })
-          .fetch();
+        const lots = await reservationUtil.getFemaleOnly(
+          location_id,
+          references
+        );
+        return {
+          status: 200,
+          error: undefined,
+          data: lots,
+        };
       } else if (userData.gender == "male" && userData.previllage == "vip") {
         lots = await ParkingLot.query()
-          .where({ location_id: location_id, category_id: 1, category_id: 4 })
+          .where({ location_id: location_id, category_id: 1 || 4 })
           .fetch();
       } else if (
         userData.gender == "male" &&
         userData.previllage == "disabled"
       ) {
         lots = await ParkingLot.query()
-          .where({ location_id: location_id, category_id: 1, category_id: 3 })
+          .where({ location_id: location_id, category_id: 1 || 3 })
           .fetch();
       } else if (userData.gender == "male" && userData.previllage == "normal") {
         lots = await ParkingLot.query()
           .where({ location_id: location_id, category_id: 1 })
           .fetch();
       }
-      return lots;
     }
   }
 
   async reserve({ request, auth }) {
     const checkLogin = await checkToken(auth);
 
-
     if (checkLogin.error) {
-      return {status:500 , error:'please login first' , data:undefined}
+      return { status: 500, error: "please login first", data: undefined };
     } else {
       const { body, params } = request;
       const { lot_name } = body;
@@ -249,6 +246,7 @@ class ReserveController {
         lotData.location_id
       );
 
+
       const date = getFullDate();
 
       let dateFormat = date.year + "-" + date.month + "-" + date.day;
@@ -278,14 +276,20 @@ class ReserveController {
         });
         await lotData.save();
 
-        return (
-          "Check out success , use time : " +
-          useHour +
-          " price : " +
-          price +
-          " remain coin : " +
-          userData.coin
-        );
+        return {
+          status: 200,
+          error: undefined,
+          data: {
+            place: locationData.location_name,
+            lotName: lotData.lot_name,
+            free: categoryData.free_hour,
+            rate: locationData.price_rate,
+            type: categoryData.type,
+            time: useHour,
+            money: userData.coin,
+            price: price,
+          },
+        };
       } else {
         lotData.merge({
           lot_status: "available",
@@ -294,7 +298,20 @@ class ReserveController {
           checkin: null,
         });
         await lotData.save();
-        return "Check out success , use time : " + useHour + " price : 0";
+        return {
+          status: 200,
+          error: undefined,
+          data: {
+            place: locationData.location_name,
+            lotName: lotData.lot_name,
+            free: categoryData.free_hour,
+            rate: locationData.price_rate,
+            type: categoryData.type,
+            time: useHour,
+            money: userData.coin,
+            price: 0,
+          },
+        };
       }
     }
   }
