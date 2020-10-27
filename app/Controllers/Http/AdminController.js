@@ -44,9 +44,9 @@ class AdminController {
                 }
                 return {status:200 , error:undefined , data:parkinglot}
             } else {
-                return {status:500 , error:'only admin cans access' , data:undefined}
+                return {status:500 , error:'only admin cans access' , data:'success'}
             }
-        } catch {
+        } catch(err) {
             return {status:500 , error:'only admin can access' , data:undefined}
         }
 
