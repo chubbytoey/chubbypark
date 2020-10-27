@@ -308,7 +308,7 @@ class ReserveController {
             rate: locationData.price_rate,
             type: categoryData.type,
             time: useHour,
-            money: userData.coin,
+            money: userData.coin ,
             price: 0,
           },
         };
